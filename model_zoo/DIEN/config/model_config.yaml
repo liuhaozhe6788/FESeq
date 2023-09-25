@@ -1,0 +1,271 @@
+Base:
+    model_root: './checkpoints/'
+    num_workers: 3
+    verbose: 1
+    early_stop_patience: 2
+    pickle_feature_encoder: True
+    save_best_only: True
+    eval_steps: null
+    debug_mode: False
+    group_id: null
+    use_features: null
+    feature_specs: null
+    feature_config: null
+
+DIEN_test:
+    model: DIEN
+    dataset_id: tiny_seq
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0
+    net_regularizer: 0
+    batch_size: 128
+    embedding_dim: 4
+    dnn_hidden_units: [64, 32]
+    dnn_activations: Dice
+    net_dropout: 0
+    dien_target_field: adgroup_id
+    dien_sequence_field: click_sequence
+    dien_neg_seq_field: []
+    gru_type: AUGRU
+    enable_sum_pooling: False
+    attention_type: bilinear_attention
+    attention_hidden_units: [80, 40]
+    attention_activation: "ReLU"
+    attention_dropout: 0
+    use_attention_softmax: True
+    aux_hidden_units: [100, 50]
+    aux_activation: "ReLU"
+    aux_loss_alpha: 0
+    batch_norm: True
+    epochs: 1
+    shuffle: True
+    seed: 20222023
+    monitor: {'AUC': 1, 'logloss': -1}
+    monitor_mode: 'max'
+
+DIEN_movielens1m: # This is a config template
+    model: DIEN
+    dataset_id: movielens1mseq
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.1
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 24
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: Dice
+    net_dropout: 0.
+    dien_target_field: ["movie_id","timestamp","year","Action","Adventure","Animation","Children","Comedy","Crime","Documentary","Drama","Fantasy","Film_Noir","Horror","Musical","Mystery","Romance","Sci_Fi","Thriller","War","Western"]
+    dien_sequence_field: ["movie_ids","timestamps","years","Actions","Adventures","Animations","Childrens","Comedys","Crimes","Documentarys","Dramas","Fantasys","Film_Noirs","Horrors","Musicals","Mysterys","Romances","Sci_Fis","Thrillers","Wars","Westerns"]
+    dien_neg_seq_field: []
+    gru_type: AUGRU
+    enable_sum_pooling: False
+    attention_type: din_attention
+    attention_hidden_units: [512, 256]
+    attention_activation: "Dice"
+    attention_dropout: 0.1
+    use_attention_softmax: True
+    aux_hidden_units: [100, 50]
+    aux_activation: "ReLU"
+    aux_loss_alpha: 0.
+    batch_norm: True
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 5
+    save_best_only: True
+
+DIEN_eleme: # This is a config template
+    model: DIEN
+    dataset_id: elemeseq
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 32
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: Dice
+    net_dropout: 0
+    dien_target_field: ["shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","hours","time_type","weekdays", "times", "rank_7","rank_30","rank_90"]
+    dien_sequence_field: ["shop_id_list","item_id_list","city_id_list","district_id_list","shop_aoi_id_list","shop_geohash_6_list","shop_geohash_12_list","category_1_id_list","hours_list","time_type_list","weekdays_list", "times_list", "rank_7_list","rank_30_list","rank_90_list"]
+    dien_neg_seq_field: []
+    gru_type: AUGRU
+    enable_sum_pooling: False
+    attention_type: din_attention
+    attention_hidden_units: [512, 256]
+    attention_activation: "Dice"
+    attention_dropout: 0.1
+    use_attention_softmax: True
+    aux_hidden_units: [100, 50]
+    aux_activation: "ReLU"
+    aux_loss_alpha: 0
+    batch_norm: True
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: 'AUC'
+    monitor_mode: 'max'
+    early_stop_patience: 5
+    save_best_only: True
+
+DIEN_bundle: # This is a config template
+    model: DIEN
+    dataset_id: bundleseq
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 16
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: Dice
+    net_dropout: 0.1
+    dien_target_field: ["ftime","bundle_id","bundle_price","island_no","spin_stock","coin_stock","diamond_stock","island_complete_gap_coin","island_complete_gap_building_cnt","tournament_rank","login_cnt_1d","ads_watch_cnt_1d","register_country_arpu","life_time","star","battle_pass_exp","is_up_to_date_version","pet_heart_stock","pet_exp_stock","friend_cnt","social_friend_cnt","pay_amt","pay_cnt","pay_per_day","pay_mean"]
+    dien_sequence_field: ["ftime_list","bundle_id_list","bundle_price_list","island_no_list","spin_stock_list","coin_stock_list","diamond_stock_list","island_complete_gap_coin_list","island_complete_gap_building_cnt_list","tournament_rank_list","login_cnt_1d_list","ads_watch_cnt_1d_list","register_country_arpu_list","life_time_list","star_list","battle_pass_exp_list","is_up_to_date_version_list","pet_heart_stock_list","pet_exp_stock_list","friend_cnt_list","social_friend_cnt_list","pay_amt_list","pay_cnt_list","pay_per_day_list","pay_mean_list"]
+    dien_neg_seq_field: []
+    gru_type: AUGRU
+    enable_sum_pooling: False
+    attention_type: din_attention
+    attention_hidden_units: [256, 256]
+    attention_activation: "Dice"
+    attention_dropout: 0.1
+    use_attention_softmax: True
+    aux_hidden_units: [100, 50]
+    aux_activation: "ReLU"
+    aux_loss_alpha: 0
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: 'AUC'
+    monitor_mode: 'max'
+    early_stop_patience: 5
+    save_best_only: True
+
+DIEN_electronics: # This is a config template
+    model: DIEN
+    dataset_id: electronicsseq
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 5.0e-4
+    embedding_regularizer: 0.05
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 64
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: Dice
+    net_dropout: 0.1
+    dien_target_field: ['asin', 'brand', 'main_cat','unixReviewTime']
+    dien_sequence_field: ['asin_list', 'brand_list', 'main_cat_list','unixReviewTime_list']
+    dien_neg_seq_field: []
+    gru_type: AUGRU
+    enable_sum_pooling: False
+    attention_type: din_attention
+    attention_hidden_units: [256, 256]
+    attention_activation: "Dice"
+    attention_dropout: 0.1
+    use_attention_softmax: True
+    aux_hidden_units: [100, 50]
+    aux_activation: "ReLU"
+    aux_loss_alpha: 0
+    batch_norm: True
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: 'AUC'
+    monitor_mode: 'max'
+    early_stop_patience: 5
+    save_best_only: True
+
+DIEN_phone: # This is a config template
+    model: DIEN
+    dataset_id: phoneseq
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.1
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 40
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: Dice
+    net_dropout: 0.1
+    dien_target_field: ['asin', 'brand', 'main_cat','unixReviewTime']
+    dien_sequence_field: ['asin_list', 'brand_list', 'main_cat_list','unixReviewTime_list']
+    dien_neg_seq_field: []
+    gru_type: AUGRU
+    enable_sum_pooling: False
+    attention_type: din_attention
+    attention_hidden_units: [256, 256]
+    attention_activation: "Dice"
+    attention_dropout: 0.1
+    use_attention_softmax: True
+    aux_hidden_units: [100, 50]
+    aux_activation: "ReLU"
+    aux_loss_alpha: 0
+    batch_norm: True
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: 'AUC'
+    monitor_mode: 'max'
+    early_stop_patience: 5
+    save_best_only: True
+
+
+DIEN_taobao: # This is a config template
+    model: DIEN
+    dataset_id: taobaoseq
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 5.e-6
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 32
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: Dice
+    net_dropout: 0.1
+    dien_target_field: ['adgroup_id', 'pid', 'cate_id', 'campaign_id', 'customer', 'price','time_stamp']
+    dien_sequence_field: ['adgroup_id_list', 'pid_list', 'cate_id_list', 'campaign_id_list', 'customer_list', 'price_list', 'time_stamp_list']
+    dien_neg_seq_field: []
+    gru_type: AUGRU
+    enable_sum_pooling: False
+    attention_type: din_attention
+    attention_hidden_units: [256, 256]
+    attention_activation: "Dice"
+    attention_dropout: 0
+    use_attention_softmax: True
+    aux_hidden_units: [100, 50]
+    aux_activation: "ReLU"
+    aux_loss_alpha: 0
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: 'AUC'
+    monitor_mode: 'max'
+    early_stop_patience: 5
+    save_best_only: True

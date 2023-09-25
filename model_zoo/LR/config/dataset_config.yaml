@@ -1,0 +1,7 @@
+### Tiny data for tests only
+tiny_h5:
+    data_root: ../../data/
+    data_format: csv
+    train_data: ../../data/movielens1m/train_data.csv
+    valid_data: ../../data/movielens1m/valid_data.csv
+    test_data: ../../data/movielens1m/test_data.csv

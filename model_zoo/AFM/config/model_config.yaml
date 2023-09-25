@@ -1,0 +1,58 @@
+Base:
+    model_root: './checkpoints/'
+    num_workers: 3
+    verbose: 1
+    early_stop_patience: 2
+    pickle_feature_encoder: True
+    save_best_only: True
+    eval_steps: null
+    debug_mode: False
+    group_id: null
+    use_features: null
+    feature_specs: null
+    feature_config: null
+
+AFM_test:
+    model: AFM
+    dataset_id: tiny_h5
+    loss: binary_crossentropy
+    metrics: ['logloss', 'AUC']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.e-3
+    embedding_regularizer: 1.e-8
+    net_regularizer: 0
+    batch_size: 128
+    embedding_dim: 4
+    attention_dim: 8
+    attention_dropout: [0, 0]
+    use_attention: True
+    epochs: 1
+    shuffle: True
+    seed: 2019
+    monitor: 'AUC'
+    monitor_mode: 'max'
+
+AFM_movielens1m: # This is a config template
+    model: AFM
+    dataset_id: movielens1m
+    loss: binary_crossentropy
+    metrics: ['logloss', 'AUC']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 2.e-3
+    embedding_regularizer: 1.e-05
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 256
+    attention_dim: 256
+    attention_dropout: [0.1, 0.1]
+    embedding_dropout: 0
+    use_attention: True
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 3
+

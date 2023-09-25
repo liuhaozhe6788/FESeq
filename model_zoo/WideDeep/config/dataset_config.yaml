@@ -1,0 +1,35 @@
+eleme:
+    data_root: ../../data
+    data_format: csv
+    train_data: ../../data/eleme/train_data.csv
+    valid_data: ../../data/eleme/val_data.csv
+    test_data: ../../data/eleme/test_data.csv
+
+    min_categr_count: 10
+    feature_cols:
+        [{name: ["user_id", "gender", "visit_city", "is_super_vip", "shop_id", "item_id", "city_id", "district_id", "shop_aoi_id", "shop_geohash_6", "shop_geohash_12", "category_1_id","times","hours", "time_type", "weekdays", "geohash12"],
+                 active: True, dtype: str, type: categorical},
+        {name: ["avg_price", "ctr_30", "ord_30", "total_amt_30", "rank_7", "rank_30", "rank_90"],
+                 active: True, dtype: float, type: numeric, normalizer: MinMaxScaler}]        
+    label_col: {name: "label", dtype: float}
+
+bundle:
+    data_root: ../../data
+    data_format: csv
+    train_data: ../../data/bundle/train_data.csv
+    valid_data: ../../data/bundle/val_data.csv
+    test_data: ../../data/bundle/test_data.csv
+
+    min_categr_count: 1
+    feature_cols:
+        [{name: ["uid", "is_visitor", "gender", "is_up_to_date_version", "register_country", "register_device",
+                      "register_device_brand", "register_os", "bundle_id", "ftime", "register_time"],
+                 active: True, dtype: str, type: categorical},
+        {name: [ "bundle_price", "island_no", "spin_stock",
+                           "coin_stock", "diamond_stock", "island_complete_gap_coin",
+                           "island_complete_gap_building_cnt", "tournament_rank", "login_cnt_1d", "ads_watch_cnt_1d",
+                           "register_country_arpu", "life_time", "star", "battle_pass_exp",
+                           "pet_heart_stock", "pet_exp_stock", "friend_cnt", "social_friend_cnt", "pay_amt", "pay_cnt",
+                           "pay_per_day", "pay_mean"],
+                 active: True, dtype: float, type: numeric, normalizer: MinMaxScaler}]        
+    label_col: {name: "impression_result", dtype: float}

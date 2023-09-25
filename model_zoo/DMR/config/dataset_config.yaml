@@ -1,0 +1,73 @@
+elemeseq:
+    data_root: ../../data
+    data_format: csv
+    train_data: ../../data/elemeseq/train_data.csv
+    valid_data: ../../data/elemeseq/val_data.csv
+    test_data: ../../data/elemeseq/test_data.csv
+    min_categr_count: 10
+    feature_cols:
+        [{name: ["user_id","gender","visit_city","is_super_vip","shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","hours","time_type","weekdays","geohash12", "times"],
+                 active: True, dtype: str, type: categorical},    
+         {name: ["avg_price", "ctr_30", "ord_30", "total_amt_30", "rank_7", "rank_30", "rank_90"],
+                 active: True, dtype: float, type: numeric, normalizer: MinMaxScaler},
+         {name: "shop_id_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "shop_id",  feature_encoder: null},
+         {name: "item_id_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "item_id",  feature_encoder: null},
+         {name: "city_id_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "city_id",  feature_encoder: null},
+         {name: "district_id_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "district_id",  feature_encoder: null},
+         {name: "shop_aoi_id_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "shop_aoi_id",  feature_encoder: null},
+         {name: "shop_geohash_6_list",  active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "shop_geohash_6",  feature_encoder: null},
+         {name: "shop_geohash_12_list",  active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "shop_geohash_12",  feature_encoder: null},
+         {name: "category_1_id_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "category_1_id",  feature_encoder: null},
+         {name: "hours_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "hours",  feature_encoder: null},
+         {name: "time_type_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "time_type", feature_encoder: null},
+         {name: "weekdays_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "weekdays",  feature_encoder: null},
+         {name: "times_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "times", feature_encoder: null},
+         {name: "rank_7_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 10, share_embedding: "rank_7",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},
+         {name: "rank_30_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 10, share_embedding: "rank_30",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},
+         {name: "rank_90_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 10, share_embedding: "rank_90",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""}]
+    label_col: {name: "label", dtype: float}
+    
+bundleseq:
+    data_root: ../../data
+    data_format: csv
+    train_data: ../../data/bundleseq/train_data.csv
+    valid_data: ../../data/bundleseq/val_data.csv
+    test_data: ../../data/bundleseq/test_data.csv
+    min_categr_count: 1
+    feature_cols: [{name: ["uid", "is_visitor", "gender", "is_up_to_date_version", "register_country", "register_device",
+                      "register_device_brand", "register_os", "bundle_id", "ftime", "register_time"],
+                 active: True, dtype: str, type: categorical},
+            {name: [ "bundle_price", "island_no", "spin_stock",
+                           "coin_stock", "diamond_stock", "island_complete_gap_coin",
+                           "island_complete_gap_building_cnt", "tournament_rank", "login_cnt_1d", "ads_watch_cnt_1d",
+                           "register_country_arpu", "life_time", "star", "battle_pass_exp",
+                           "pet_heart_stock", "pet_exp_stock", "friend_cnt", "social_friend_cnt", "pay_amt", "pay_cnt",
+                           "pay_per_day", "pay_mean"],
+                 active: True, dtype: float, type: numeric, normalizer: MinMaxScaler},
+            {name: "ftime_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 8, share_embedding: "ftime",  feature_encoder: null, fill_na: ""},
+            {name: "bundle_id_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 8, share_embedding: "bundle_id",  feature_encoder: null, fill_na: ""}, 
+            {name: "bundle_price_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "bundle_price",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},
+            {name: "island_no_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "island_no",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},
+            {name: "spin_stock_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "spin_stock",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},
+            {name: "coin_stock_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "coin_stock",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},  
+            {name: "diamond_stock_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "diamond_stock",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},   
+            {name: "island_complete_gap_coin_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "island_complete_gap_coin",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},   
+            {name: "island_complete_gap_building_cnt_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "island_complete_gap_building_cnt",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},      
+            {name: "tournament_rank_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "tournament_rank",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},    
+            {name: "login_cnt_1d_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "login_cnt_1d",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},   
+            {name: "ads_watch_cnt_1d_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "ads_watch_cnt_1d",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},   
+            {name: "register_country_arpu_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "register_country_arpu",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},   
+            {name: "life_time_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "life_time",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},   
+            {name: "star_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "star",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},
+            {name: "battle_pass_exp_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "battle_pass_exp",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},  
+            {name: "is_up_to_date_version_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 8, share_embedding: "is_up_to_date_version",  feature_encoder: null, fill_na: ""},
+            {name: "pet_heart_stock_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "pet_heart_stock",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},                  
+            {name: "pet_exp_stock_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "pet_exp_stock",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},  
+            {name: "friend_cnt_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "friend_cnt",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},  
+            {name: "social_friend_cnt_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "social_friend_cnt",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""}, 
+            {name: "pay_amt_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "pay_amt",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},   
+            {name: "pay_cnt_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "pay_cnt",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""}, 
+            {name: "pay_per_day_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "pay_per_day",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""},  
+            {name: "pay_mean_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "pay_mean",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""}
+                 ]                      
+    label_col: {name: "impression_result", dtype: float}
