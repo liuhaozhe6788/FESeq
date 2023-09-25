@@ -6,7 +6,7 @@ This is the PyTorch implementation for the paper Feature Interaction-Enhanced Se
 
 ### Ele.me Dataset
 
-The original Ele.me dataset is from this [link](https://tianchi.aliyun.com/dataset/131047). However, many data files are corrupted. We extract and sample from D1_0, D3_1, and D5_0 only. The sampled Ele.me dataset is from this [link](https://drive.google.com/drive/folders/1azJt4ZbKOYeO8wDT-M06rUx09WRckWaG). 
+The original Ele.me dataset is from this [link](https://tianchi.aliyun.com/dataset/131047). However, many data files are corrupted. We extract and sample from D1_0, D3_1, and D5_0 csv files only. The sampled Ele.me dataset can be downloaded from this [link](https://drive.google.com/drive/folders/1azJt4ZbKOYeO8wDT-M06rUx09WRckWaG). 
 
 ### Bundle Dataset
 
