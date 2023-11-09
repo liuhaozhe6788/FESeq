@@ -31,11 +31,11 @@ To train a baseline:
 ```
 ./run_<baseline_name>.sh
 ```
-To get the ablation studies results:
+To reproduce the ablation studies results:
 ```
 ./run_FESeq_abl_study.sh
 ```
-To get the hyperparameter tuning results:
+To reproduce the hyperparameter tuning results:
 ```
 ./run_FESeq_hp_tuning.sh
 ```
