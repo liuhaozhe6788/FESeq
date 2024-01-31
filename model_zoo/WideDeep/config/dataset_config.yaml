@@ -7,7 +7,7 @@ eleme:
 
     min_categr_count: 10
     feature_cols:
-        [{name: ["user_id", "gender", "visit_city", "is_super_vip", "shop_id", "item_id", "city_id", "district_id", "shop_aoi_id", "shop_geohash_6", "shop_geohash_12", "category_1_id","times","hours", "time_type", "weekdays", "geohash12"],
+        [{name: ["user_id", "gender", "visit_city", "is_super_vip", "shop_id", "item_id", "city_id", "district_id", "shop_aoi_id", "shop_geohash_6", "shop_geohash_12", "category_1_id", "times", "hours", "time_type", "weekdays", "geohash12"],
                  active: True, dtype: str, type: categorical},
         {name: ["avg_price", "ctr_30", "ord_30", "total_amt_30", "rank_7", "rank_30", "rank_90"],
                  active: True, dtype: float, type: numeric, normalizer: MinMaxScaler}]        
@@ -33,3 +33,17 @@ bundle:
                            "pay_per_day", "pay_mean"],
                  active: True, dtype: float, type: numeric, normalizer: MinMaxScaler}]        
     label_col: {name: "impression_result", dtype: float}
+
+ml_10m:
+    data_root: ../../../data
+    data_format: csv
+    train_data: ../../../data/ml_10m/train_data.csv
+    valid_data: ../../../data/ml_10m/val_data.csv
+    test_data: ../../../data/ml_10m/test_data.csv
+
+    min_categr_count: 1
+    feature_cols:
+        [{name: ["user_id", "movie_id", "year", "timestamp", "Action", "Adventure", "Animation", "Children", "Comedy", "Crime", "Documentary", "Drama", "Fantasy", "Film_Noir", "Horror", "Musical", "Mystery", "Romance", "Sci_Fi", "Thriller", "War", "Western",],
+                 active: True, dtype: str, type: categorical}
+        ]        
+    label_col: {name: "label", dtype: float}
