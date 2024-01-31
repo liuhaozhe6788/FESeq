@@ -24,7 +24,6 @@ from fuxictr.metrics import evaluate_metrics
 from fuxictr.pytorch.torch_utils import get_device, get_optimizer, get_loss, get_regularizer
 from fuxictr.utils import print_to_json, Monitor, save_attention_matrix, save_rel_score_relation
 from tqdm import tqdm
-import tensorflow as tf
 import datetime
 from pathlib import Path
         
@@ -71,7 +70,6 @@ class BaseModel(nn.Module):
         self.validation_metrics = kwargs["metrics"]
         # Hide GPU from visible devices
         log_dir = f"log/{self._dataset_id}/{self.model_id}/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-        self.train_summary_writer = tf.summary.create_file_writer(log_dir)
         if params:
             result_filename = os.path.join(log_dir, "config.log")
             with open(result_filename, 'w') as fw:
@@ -181,8 +179,6 @@ class BaseModel(nn.Module):
 
     def checkpoint_and_earlystop(self, logs, min_delta=1e-6):
         monitor_value = self._monitor.get_value(logs)
-        with self.train_summary_writer.as_default():
-            tf.summary.scalar("monitor_value", monitor_value, step=self._total_steps)
         if (self._monitor_mode == "min" and monitor_value > self._best_metric - min_delta) or \
            (self._monitor_mode == "max" and monitor_value < self._best_metric + min_delta):
             self._stopping_steps += 1
@@ -231,9 +227,6 @@ class BaseModel(nn.Module):
             self._batch_index = batch_index
             self._total_steps += 1
             loss = self.train_step(batch_data)
-            with self.train_summary_writer.as_default():
-                tf.summary.scalar('train_loss', loss.item(), step=self._total_steps)
-                tf.summary.scalar('learning_rate', self.current_lr, step=self._total_steps)
 
             train_loss += loss.item()
             if self._total_steps % self._eval_steps == 0:
@@ -285,13 +278,6 @@ class BaseModel(nn.Module):
             else:
                 val_logs = self.evaluate_metrics(y_true, y_pred, self.validation_metrics, group_id)
             logging.info('[Metrics] ' + ' - '.join('{}: {:.6f}'.format(k, v) for k, v in val_logs.items()))
-            with self.train_summary_writer.as_default():
-                if test:
-                    for k, v in val_logs.items():
-                        tf.summary.scalar(f"Test_{k}", v, step=self._total_steps)
-                else:
-                    for k, v in val_logs.items():
-                        tf.summary.scalar(k, v, step=self._total_steps)
             return val_logs
 
     def predict(self, data_generator):

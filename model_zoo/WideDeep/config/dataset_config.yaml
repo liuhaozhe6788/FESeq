@@ -35,11 +35,11 @@ bundle:
     label_col: {name: "impression_result", dtype: float}
 
 ml_10m:
-    data_root: ../../../data
+    data_root: ../../data
     data_format: csv
-    train_data: ../../../data/ml_10m/train_data.csv
-    valid_data: ../../../data/ml_10m/val_data.csv
-    test_data: ../../../data/ml_10m/test_data.csv
+    train_data: ../../data/ml_10m/train_data.csv
+    valid_data: ../../data/ml_10m/val_data.csv
+    test_data: ../../data/ml_10m/test_data.csv
 
     min_categr_count: 1
     feature_cols:
