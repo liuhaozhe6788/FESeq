@@ -4,4 +4,3 @@ scikit-learn
 numpy
 h5py
 tqdm
-tensorflow-cpu==2.9.0
