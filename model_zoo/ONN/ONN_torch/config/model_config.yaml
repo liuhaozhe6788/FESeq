@@ -125,3 +125,27 @@ ONNv2_bundle: # This is a config template
     monitor_mode: 'max'
     save_best_only: True
     early_stop_patience: 5
+
+ONNv2_ml10m: # This is a config template
+    model: ONNv2
+    dataset_id: bundle
+    loss: binary_crossentropy
+    metrics: ['logloss', 'AUC']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    hidden_units: [1024, 512, 256]
+    hidden_activations: relu
+    net_dropout: 0.4
+    batch_norm: True
+    batch_size: 4096
+    embedding_dim: 10
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: 'AUC'
+    monitor_mode: 'max'
+    save_best_only: True
+    early_stop_patience: 2
