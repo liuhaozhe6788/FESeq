@@ -1,10 +1,10 @@
 import os
 import pandas as pd
-from utils import split_train_val_test_by_time, reduce_mem, plot_user_click_count_his
+from utils import split_train_val_test_by_time, reduce_mem, create_sequences, create_targets
 import swifter
 
 def gen_ml10mseq_data():
-    path = "ml_10m/"
+    path = "ml_10mseq/"
     if not os.path.exists(path):
         os.mkdir(path)
     root_path = './raw_data/'
@@ -56,21 +56,32 @@ def gen_ml10mseq_data():
     data.drop(['rating', "title", "genres"], axis=1, inplace=True)
     data = reduce_mem(data)
 
-    sequence_col = 
+    sequence_col = ["movie_id", "year", "timestamp", "label"] + genres
 
-    num_users = len(data.user_id.unique())
-    num_items = len(data.movie_id.unique())
-    num_interactions = data[['user_id', 'movie_id']].drop_duplicates().shape[0]
-    num_rows = data.shape[0]
-    # sparsity = (1-num_interactions/(num_users*num_items))*100
-    print(f"number of rows:{num_rows}")
-    print(f"number of interactions:{num_interactions}")
-    print(f"number of users:{num_users}")
-    print(f"number of items:{num_items}")
-    # print(f"dataset sparcity:{sparsity}%")
-    plot_user_click_count_his(data, 'user_id', 'movielens-10m', 1000)
+    sequence_list_col = [col+"_list" for col in sequence_col]
 
-    train, val, test = split_train_val_test_by_time(data, 'user_id', 'timestamp')
+    grouped = data.sort_values(by=['timestamp']).groupby('user_id')
+
+    df = pd.DataFrame(
+        data={
+            "user_id": list(grouped.groups.keys()),
+            **{col_name: grouped[col_name].apply(list) for col_name in sequence_col},
+        }
+    )
+    del grouped
+
+    sequence_length = 10 + 1
+    for col_name in sequence_col:
+        df[col_name+ "_list"] = df[col_name].swifter.apply(lambda x: create_sequences(x, window_size=sequence_length))
+        df[col_name] = df[col_name].swifter.apply(lambda x: create_targets(x, window_size=sequence_length))
+
+    df = df.explode(column=sequence_col+sequence_list_col, ignore_index=True)
+
+    df.drop(["label_list"], axis=1,inplace=True)
+
+    df.sort_values(by=["timestamp"], inplace=True)
+
+    train, val, test = split_train_val_test_by_time(df, 'user_id', 'timestamp')
 
     train.to_csv(path+"train_data.csv", index=False, sep=',')
     val.to_csv(path+"val_data.csv", index=False, sep=',')
