@@ -15,12 +15,6 @@
 # =========================================================================
 
 
-""" This model implements the paper: Chen et al., Behavior Sequence Transformer
-    for E-commerce Recommendation in Alibaba, DLP-KDD 2021.
-    [PDF] https://arxiv.org/pdf/1905.06874v1.pdf
-"""
-
-
 import torch
 from torch import nn
 import numpy as np

@@ -12,14 +12,15 @@ def gen_ml10m_data():
     ratings = pd.read_csv(
         root_path + "ml_10m/ratings.dat",
         sep="::",
-        names=["user_id", "movie_id", "rating", "timestamp"]
+        names=["user_id", "movie_id", "rating", "timestamp"],
+        nrows=None
     )
 
     movies = pd.read_csv(
         root_path + "ml_10m/movies.dat",
         sep="::", 
         names=["movie_id", "title", "genres"], 
-        encoding="ISO-8859-1"
+        nrows=None
     )
 
     ## Movies

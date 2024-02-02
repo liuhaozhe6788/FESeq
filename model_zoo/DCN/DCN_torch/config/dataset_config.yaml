@@ -33,3 +33,17 @@ bundle:
                            "pay_per_day", "pay_mean"],
                  active: True, dtype: float, type: numeric, normalizer: MinMaxScaler}]        
     label_col: {name: "impression_result", dtype: float}
+
+ml_10m:
+    data_root: ../../../data
+    data_format: csv
+    train_data: ../../../data/ml_10m/train_data.csv
+    valid_data: ../../../data/ml_10m/val_data.csv
+    test_data: ../../../data/ml_10m/test_data.csv
+
+    min_categr_count: 1
+    feature_cols:
+        [{name: ["user_id", "movie_id", "year", "timestamp", "Action", "Adventure", "Animation", "Children", "Comedy", "Crime", "Documentary", "Drama", "Fantasy", "Film_Noir", "Horror", "Musical", "Mystery", "Romance", "Sci_Fi", "Thriller", "War", "Western",],
+                 active: True, dtype: str, type: categorical}
+        ]        
+    label_col: {name: "label", dtype: float}

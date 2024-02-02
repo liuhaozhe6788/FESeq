@@ -71,6 +71,7 @@ class BaseModel(nn.Module):
         # Hide GPU from visible devices
         log_dir = f"log/{self._dataset_id}/{self.model_id}/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
         if params:
+            os.makedirs(log_dir, exist_ok=True)
             result_filename = os.path.join(log_dir, "config.log")
             with open(result_filename, 'w') as fw:
                 fw.write(print_to_json(params))
@@ -166,6 +167,10 @@ class BaseModel(nn.Module):
         
         logging.info("Start training: {} batches/epoch".format(self._steps_per_epoch))
         logging.info("************ Epoch=1 start ************")
+        start = torch.cuda.Event(enable_timing=True)
+        end = torch.cuda.Event(enable_timing=True)
+        start.record()
+
         for epoch in range(epochs):
             self._epoch_index = epoch
             self.train_epoch(data_generator)
@@ -173,6 +178,11 @@ class BaseModel(nn.Module):
                 break
             else:
                 logging.info("************ Epoch={} end ************".format(self._epoch_index + 1))
+
+        end.record()
+        torch.cuda.synchronize()
+
+        logging.info("Training time: {:.6f} GPU mins".format(start.elapsed_time(end)/6e4))
         logging.info("Training finished.")
         logging.info("Load best model: {}".format(self.checkpoint))
         self.load_weights(self.checkpoint)
@@ -249,6 +259,12 @@ class BaseModel(nn.Module):
                 rel_score = []
             if self._verbose > 0:
                 data_generator = tqdm(data_generator, disable=False, file=sys.stdout)
+
+            if test:
+                start = torch.cuda.Event(enable_timing=True)
+                end = torch.cuda.Event(enable_timing=True)
+                start.record()
+
             for batch_data in data_generator:
                 return_dict = self.forward(batch_data)
                 y_pred.extend(return_dict["y_pred"].data.cpu().numpy().reshape(-1))
@@ -259,6 +275,12 @@ class BaseModel(nn.Module):
                     rel_score.append(np.mean(return_dict["rel_score"].data.cpu().numpy(), axis=0))           
                 if self.feature_map.group_id is not None:
                     group_id.extend(self.get_group_id(batch_data).numpy().reshape(-1))
+
+            if test:
+                end.record()
+                torch.cuda.synchronize()
+                logging.info("Inference time: {:.6f} GPU mins".format(start.elapsed_time(end)/6e4))
+
             y_pred = np.array(y_pred, np.float64)
             y_true = np.array(y_true, np.float64)
             if test and self._save_attn_matrix:

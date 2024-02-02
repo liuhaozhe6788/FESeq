@@ -56,36 +56,11 @@ DeepFM_test2:
     monitor: 'AUC'
     monitor_mode: 'max'
 
-DeepFM_movielens1m: # This is a config template
-    model: DeepFM
-    dataset_id: movielens1m
-    loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
-    task: binary_classification
-    optimizer: adam
-    hidden_units: [400, 400, 400]
-    hidden_activations: relu
-    net_regularizer: 0
-    embedding_regularizer: 0.1
-    learning_rate: 1.e-3
-    batch_norm: True
-    net_dropout: 0.1
-    batch_size: 4096
-    embedding_dim: 24
-    epochs: 100
-    shuffle: True
-    seed: 2023
-    monitor: 'AUC'
-    monitor_mode: 'max'
-    save_best_only: True
-    early_stop_patience: 5
-
-
 DeepFM_eleme: # This is a config template
     model: DeepFM
     dataset_id: eleme
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     hidden_units: [400, 400, 400]
@@ -100,7 +75,7 @@ DeepFM_eleme: # This is a config template
     epochs: 100
     shuffle: True
     seed: 2023
-    monitor: 'AUC'
+    monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
     early_stop_patience: 5
@@ -110,7 +85,7 @@ DeepFM_bundle: # This is a config template
     model: DeepFM
     dataset_id: bundle
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     hidden_units: [1024, 512, 256]
@@ -125,40 +100,16 @@ DeepFM_bundle: # This is a config template
     epochs: 100
     shuffle: True
     seed: 2023
-    monitor: 'AUC'
+    monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
     early_stop_patience: 5
 
-DeepFM_electronics: # This is a config template
+DeepFM_ml10m: # This is a config template
     model: DeepFM
-    dataset_id: electronics
+    dataset_id: ml_10m
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
-    task: binary_classification
-    optimizer: adam
-    hidden_units: [400, 400, 400]
-    hidden_activations: relu
-    net_regularizer: 0
-    embedding_regularizer: 0.005
-    learning_rate: 5.e-4
-    batch_norm: True
-    net_dropout: 0.1
-    batch_size: 4096
-    embedding_dim: 64
-    epochs: 100
-    shuffle: True
-    seed: 2023
-    monitor: 'AUC'
-    monitor_mode: 'max'
-    save_best_only: True
-    early_stop_patience: 5
-
-DeepFM_phone: # This is a config template
-    model: DeepFM
-    dataset_id: phone
-    loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     hidden_units: [400, 400, 400]
@@ -167,37 +118,12 @@ DeepFM_phone: # This is a config template
     embedding_regularizer: 0.01
     learning_rate: 1.e-3
     batch_norm: True
-    net_dropout: 0.1
+    net_dropout: 0.3
     batch_size: 4096
-    embedding_dim: 40
+    embedding_dim: 10
     epochs: 100
     shuffle: True
     seed: 2023
-    monitor: 'AUC'
+    monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
-    early_stop_patience: 5
-
-DeepFM_taobao: # This is a config template
-    model: DeepFM
-    dataset_id: taobao
-    loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
-    task: binary_classification
-    optimizer: adam
-    hidden_units: [512, 256, 128]
-    hidden_activations: relu
-    net_regularizer: 0
-    embedding_regularizer: 5.e-6
-    learning_rate: 1.e-3
-    batch_norm: True
-    net_dropout: 0.
-    batch_size: 4096
-    embedding_dim: 32
-    epochs: 100
-    shuffle: True
-    seed: 2023
-    monitor: 'AUC'
-    monitor_mode: 'max'
-    save_best_only: True
-    early_stop_patience: 5

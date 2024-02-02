@@ -43,7 +43,7 @@ FINAL_eleme: # This is a config template
     model: FINAL
     dataset_id: eleme
     loss: binary_crossentropy
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.e-3
@@ -65,7 +65,7 @@ FINAL_eleme: # This is a config template
     epochs: 100
     shuffle: True
     seed: 2023
-    monitor: 'AUC'
+    monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
     early_stop_patience: 5
@@ -74,7 +74,7 @@ FINAL_bundle: # This is a config template
     model: FINAL
     dataset_id: bundle
     loss: binary_crossentropy
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.e-3
@@ -96,7 +96,37 @@ FINAL_bundle: # This is a config template
     epochs: 100
     shuffle: True
     seed: 2023
-    monitor: 'AUC'
+    monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
     early_stop_patience: 5
+
+FINAL_ml10m: # This is a config template
+    model: FINAL
+    dataset_id: ml_10m
+    loss: binary_crossentropy
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    block_type: "2B"
+    batch_norm: True
+    use_field_gate: True
+    block1_hidden_units: [400, 400]
+    block1_hidden_activations: ReLU
+    block1_dropout: 0.
+    block2_hidden_units: [500]
+    block2_hidden_activations: ReLU
+    block2_dropout: 0.
+    residual_type: concat
+    norm_type: BN
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    save_best_only: True

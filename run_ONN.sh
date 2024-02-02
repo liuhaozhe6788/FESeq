@@ -1,5 +1,4 @@
 #! /bin/sh
-pip install -r requirements.txt
 home="model_zoo"
 
 export PYTHONPATH=${PWD}

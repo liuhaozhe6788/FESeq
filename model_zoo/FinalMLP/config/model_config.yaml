@@ -32,7 +32,7 @@ DualMLP_test:
     mlp2_batch_norm: False
     batch_size: 128
     embedding_dim: 4
-    epochs: 1
+    epochs: 100
     shuffle: True
     seed: 2019
     monitor: 'AUC'
@@ -89,7 +89,7 @@ FinalMLP_test:
     num_heads: 2
     batch_size: 128
     embedding_dim: 4
-    epochs: 1
+    epochs: 100
     shuffle: True
     seed: 2019
     monitor: 'AUC'
@@ -99,22 +99,22 @@ DualMLP_eleme: # This is a config template
     model: DualMLP
     dataset_id: eleme
     loss: binary_crossentropy
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.e-3
     embedding_regularizer: 0.05
     net_regularizer: 0
-    mlp1_hidden_units: [1024, 512, 256]
+    mlp1_hidden_units: [400]
     mlp1_hidden_activations: relu
     mlp1_dropout: 0.2
     mlp1_batch_norm: True
-    mlp2_hidden_units: [1024, 512, 256]
+    mlp2_hidden_units: [800]
     mlp2_hidden_activations: relu
     mlp2_dropout: 0.1
     mlp2_batch_norm: True
     use_fs: False
-    fs_hidden_units: [1024, 512, 256]
+    fs_hidden_units: [800]
     fs1_context: []
     fs2_context: []
     num_heads: 10
@@ -123,7 +123,7 @@ DualMLP_eleme: # This is a config template
     epochs: 100
     shuffle: True
     seed: 2023
-    monitor: 'AUC'
+    monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
     early_stop_patience: 5
@@ -132,7 +132,7 @@ DualMLP_bundle: # This is a config template
     model: DualMLP
     dataset_id: bundle
     loss: binary_crossentropy
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.e-3
@@ -156,31 +156,63 @@ DualMLP_bundle: # This is a config template
     epochs: 100
     shuffle: True
     seed: 2023
-    monitor: 'AUC'
+    monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
     early_stop_patience: 5
+
+DualMLP_ml10m: # This is a config template
+    model: DualMLP
+    dataset_id: ml_10m
+    loss: binary_crossentropy
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    mlp1_hidden_units: [400]
+    mlp1_hidden_activations: relu
+    mlp1_dropout: 0.4
+    mlp1_batch_norm: True
+    mlp2_hidden_units: [800]
+    mlp2_hidden_activations: relu
+    mlp2_dropout: 0.2
+    mlp2_batch_norm: True
+    use_fs: False
+    fs_hidden_units: [800]
+    fs1_context: []
+    fs2_context: []
+    num_heads: 10
+    batch_size: 4096
+    embedding_dim: 10
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    save_best_only: True
 
 FinalMLP_eleme: # This is a config template
     model: FinalMLP
     dataset_id: eleme
     loss: binary_crossentropy
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.e-3
     embedding_regularizer: 0.05
     net_regularizer: 0
-    mlp1_hidden_units: [1024, 512, 256]
+    mlp1_hidden_units: [400]
     mlp1_hidden_activations: relu
     mlp1_dropout: 0.2
     mlp1_batch_norm: True
-    mlp2_hidden_units: [1024, 512, 256]
+    mlp2_hidden_units: [800]
     mlp2_hidden_activations: relu
     mlp2_dropout: 0.1
     mlp2_batch_norm: True
     use_fs: True
-    fs_hidden_units: [1024, 512, 256]
+    fs_hidden_units: [800]
     fs1_context: []
     fs2_context: []
     num_heads: 10
@@ -189,7 +221,7 @@ FinalMLP_eleme: # This is a config template
     epochs: 100
     shuffle: True
     seed: 2023
-    monitor: 'AUC'
+    monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
     early_stop_patience: 5
@@ -198,7 +230,7 @@ FinalMLP_bundle: # This is a config template
     model: FinalMLP
     dataset_id: bundle
     loss: binary_crossentropy
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.e-3
@@ -222,7 +254,39 @@ FinalMLP_bundle: # This is a config template
     epochs: 100
     shuffle: True
     seed: 2023
-    monitor: 'AUC'
+    monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
     early_stop_patience: 5
+
+FinalMLP_ml10m: # This is a config template
+    model: FinalMLP
+    dataset_id: ml_10m
+    loss: binary_crossentropy
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    mlp1_hidden_units: [400]
+    mlp1_hidden_activations: relu
+    mlp1_dropout: 0.4
+    mlp1_batch_norm: True
+    mlp2_hidden_units: [800]
+    mlp2_hidden_activations: relu
+    mlp2_dropout: 0.2
+    mlp2_batch_norm: True
+    use_fs: True
+    fs_hidden_units: [800]
+    fs1_context: []
+    fs2_context: []
+    num_heads: 10
+    batch_size: 4096
+    embedding_dim: 10
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    save_best_only: True

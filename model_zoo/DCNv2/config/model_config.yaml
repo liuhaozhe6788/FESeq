@@ -44,7 +44,7 @@ DCNv2_eleme: # This is a config template
     model: DCNv2
     dataset_id: eleme
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     model_structure: parallel
@@ -73,7 +73,7 @@ DCNv2_bundle: # This is a config template
     model: DCNv2
     dataset_id: bundle
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     model_structure: parallel
@@ -97,3 +97,31 @@ DCNv2_bundle: # This is a config template
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     early_stop_patience: 5
+
+DCNv2_ml10m: # This is a config template
+    model: DCNv2
+    dataset_id: ml_10m
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    model_structure: parallel
+    use_low_rank_mixture: False
+    low_rank: 32
+    num_experts: 4
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    stacked_dnn_hidden_units: [500, 500, 500]
+    parallel_dnn_hidden_units: [400, 400, 400]
+    dnn_activations: relu
+    num_cross_layers: 5
+    net_dropout: 0.2
+    batch_norm: True
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'

@@ -15,12 +15,6 @@
 # =========================================================================
 
 
-""" This model implements the paper: Chen et al., Behavior Sequence Transformer
-    for E-commerce Recommendation in Alibaba, DLP-KDD 2021.
-    [PDF] https://arxiv.org/pdf/1905.06874v1.pdf
-"""
-
-
 import torch
 from torch import nn
 import numpy as np
@@ -221,10 +215,11 @@ class TiSASRec(BaseModel):
         if self.use_abs_time:
             relation_matrix = torch.abs(relation_matrix)
         max_rel_time = self.num_rel_time_embeddings-2 if self.use_abs_time else int((self.num_rel_time_embeddings-2)/2)
+        relation_matrix = relation_matrix.long()
         relation_matrix = torch.where(torch.abs(relation_matrix) > max_rel_time, max_rel_time,relation_matrix)
         if not self.use_abs_time:
             relation_matrix += int((self.num_rel_time_embeddings-2)/2)
-        return relation_matrix.to(self.device).long()
+        return relation_matrix.to(self.device)
 
 
 class TimeAwareTransformerEncoder(nn.Module):

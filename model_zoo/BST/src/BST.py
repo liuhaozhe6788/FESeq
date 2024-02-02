@@ -132,10 +132,10 @@ class BST(BaseModel):
         concat_time = torch.cat([sequence_time, target_time.unsqueeze(1)], dim=1)
 
         delta_times = torch.unsqueeze(target_time, dim=sequence_time.dim()-1) - concat_time
-
+        delta_times = delta_times.long()
         delta_times = torch.where(delta_times > self.num_time_embeddings -2, self.num_time_embeddings -2, delta_times)
         delta_times = torch.where(delta_times < 0, 0, delta_times)
-        delta_times = delta_times.to(self.device).long()
+        delta_times = delta_times.to(self.device)
 
         target_field = copy.deepcopy(self.bst_target_field)
         sequence_field = copy.deepcopy(self.bst_sequence_field)

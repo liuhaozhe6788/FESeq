@@ -39,7 +39,7 @@ DCN_eleme: # This is a config template
     model: DCN
     dataset_id: eleme
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -63,7 +63,7 @@ DCN_bundle: # This is a config template
     model: DCN
     dataset_id: bundle
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -82,3 +82,26 @@ DCN_bundle: # This is a config template
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     early_stop_patience: 5
+
+DCN_ml10m: # This is a config template
+    model: DCN
+    dataset_id: ml_10m
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    dnn_hidden_units: [400, 400, 400]
+    dnn_activations: relu
+    num_cross_layers: 4
+    net_dropout: 0.2
+    batch_norm: True
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'

@@ -51,7 +51,7 @@ JointCTR_eleme: # This is a config template
     model: JointCTR
     dataset_id: elemeseq
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-2
@@ -92,7 +92,7 @@ JointCTR_bundle: # This is a config template
     model: JointCTR
     dataset_id: bundleseq
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -128,4 +128,44 @@ JointCTR_bundle: # This is a config template
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     early_stop_patience: 5
+    save_best_only: True
+
+JointCTR_ml10m: # This is a config template
+    model: JointCTR
+    dataset_id: ml_10mseq
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: "Dice"
+    autoint_heads: 4
+    autoint_layers: 3
+    autoint_dim: 32
+    net_dropout: 0.1
+    default_field: ["user_id"]
+    target_field: ["movie_id", "year", "timestamp", "Action", "Adventure", "Animation", "Children", "Comedy", "Crime", "Documentary", "Drama", "Fantasy", "Film_Noir", "Horror", "Musical", "Mystery", "Romance", "Sci_Fi", "Thriller", "War", "Western"]
+    sequence_field: ["movie_id_list", "year_list", "timestamp_list", "Action_list", "Adventure_list", "Animation_list", "Children_list", "Comedy_list", "Crime_list", "Documentary_list", "Drama_list", "Fantasy_list", "Film_Noir_list", "Horror_list", "Musical_list", "Mystery_list", "Romance_list", "Sci_Fi_list", "Thriller_list", "War_list", "Western_list"]
+    neg_seq_field: []
+    gru_type: AUGRU
+    enable_sum_pooling: False
+    attention_type: din_attention
+    attention_hidden_units: [512, 256]
+    attention_activation: "Dice"
+    attention_dropout: 0.1
+    use_attention_softmax: True
+    aux_hidden_units: [100, 50]
+    aux_activation: "ReLU"
+    aux_loss_alpha: 0
+    batch_norm: True
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
     save_best_only: True

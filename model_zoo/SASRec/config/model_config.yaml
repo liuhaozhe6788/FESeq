@@ -48,7 +48,7 @@ SASRec_eleme: # This is a config template
     model: SASRec
     dataset_id: elemeseq
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 5.0e-3
@@ -81,7 +81,7 @@ SASRec_bundle: # This is a config template
     model: SASRec
     dataset_id: bundleseq
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -109,3 +109,35 @@ SASRec_bundle: # This is a config template
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     early_stop_patience: 5
+
+SASRec_ml10m: # This is a config template
+    model: SASRec
+    dataset_id: ml_10mseq
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.001
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: relu
+    num_heads: 1
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.1
+    layer_norm: True
+    use_residual: True
+    target_field: ["movie_id", "year", "timestamp", "Action", "Adventure", "Animation", "Children", "Comedy", "Crime", "Documentary", "Drama", "Fantasy", "Film_Noir", "Horror", "Musical", "Mystery", "Romance", "Sci_Fi", "Thriller", "War", "Western"]
+    sequence_field: ["movie_id_list", "year_list", "timestamp_list", "Action_list", "Adventure_list", "Animation_list", "Children_list", "Comedy_list", "Crime_list", "Documentary_list", "Drama_list", "Fantasy_list", "Film_Noir_list", "Horror_list", "Musical_list", "Mystery_list", "Romance_list", "Sci_Fi_list", "Thriller_list", "War_list", "Western_list"]
+    seq_pooling_type: target
+    num_pos_embeddings: 12
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'

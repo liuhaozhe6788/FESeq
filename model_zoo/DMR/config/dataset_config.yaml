@@ -71,3 +71,37 @@ bundleseq:
             {name: "pay_mean_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "pay_mean",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""}
                  ]                      
     label_col: {name: "impression_result", dtype: float}
+
+ml_10mseq:
+    data_root: ../../data
+    data_format: csv
+    train_data: ../../data/ml_10mseq/train_data.csv
+    valid_data: ../../data/ml_10mseq/val_data.csv
+    test_data: ../../data/ml_10mseq/test_data.csv
+    min_categr_count: 1
+    feature_cols:
+        [{name: ["user_id", "movie_id", "year", "timestamp", "Action", "Adventure", "Animation", "Children", "Comedy", "Crime", "Documentary", "Drama", "Fantasy", "Film_Noir", "Horror", "Musical", "Mystery", "Romance", "Sci_Fi", "Thriller", "War", "Western"],
+                 active: True, dtype: str, type: categorical},    
+         {name: "movie_id_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "movie_id",  feature_encoder: null},
+         {name: "year_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "year",  feature_encoder: null},
+         {name: "timestamp_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "timestamp",  feature_encoder: null},
+         {name: "Action_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Action",  feature_encoder: null},
+         {name: "Adventure_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Adventure",  feature_encoder: null},
+         {name: "Animation_list",  active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Animation",  feature_encoder: null},
+         {name: "Children_list",  active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Children",  feature_encoder: null},
+         {name: "Comedy_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Comedy",  feature_encoder: null},
+         {name: "Crime_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Crime",  feature_encoder: null},
+         {name: "Documentary_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Documentary", feature_encoder: null},
+         {name: "Drama_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Drama",  feature_encoder: null},
+         {name: "Fantasy_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Fantasy", feature_encoder: null},
+         {name: "Film_Noir_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Film_Noir", feature_encoder: null},
+         {name: "Horror_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Horror", feature_encoder: null},
+         {name: "Musical_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Musical", feature_encoder: null},
+         {name: "Mystery_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Mystery", feature_encoder: null},
+         {name: "Romance_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Romance", feature_encoder: null},
+         {name: "Sci_Fi_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Sci_Fi", feature_encoder: null},
+         {name: "Thriller_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Thriller", feature_encoder: null},
+         {name: "War_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "War", feature_encoder: null},
+         {name: "Western_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "Western", feature_encoder: null},
+         ]
+    label_col: {name: "label", dtype: float}

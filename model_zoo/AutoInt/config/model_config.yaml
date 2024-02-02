@@ -45,7 +45,7 @@ AutoInt_eleme:
     model: AutoInt
     dataset_id: eleme
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.e-3
@@ -67,7 +67,7 @@ AutoInt_eleme:
     epochs: 100
     shuffle: True
     seed: 2023
-    monitor: 'AUC'
+    monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
     early_stop_patience: 5
@@ -76,7 +76,7 @@ AutoInt_bundle:
     model: AutoInt
     dataset_id: bundle
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.e-3
@@ -98,7 +98,37 @@ AutoInt_bundle:
     epochs: 100
     shuffle: True
     seed: 2023
-    monitor: 'AUC'
+    monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
     early_stop_patience: 5
+
+AutoInt_ml10m:
+    model: AutoInt
+    dataset_id: ml_10m
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    dnn_hidden_units: []
+    dnn_activations: relu
+    net_dropout: 0.
+    num_heads: 4
+    attention_layers: 2
+    attention_dim: 128
+    use_residual: True
+    batch_norm: False
+    layer_norm: True
+    use_scale: True
+    use_wide: True
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    save_best_only: True

@@ -72,7 +72,7 @@ DIN_eleme: # This is a config template
     model: DIN
     dataset_id: elemeseq
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -94,7 +94,7 @@ DIN_eleme: # This is a config template
     epochs: 100
     shuffle: True
     seed: 2023
-    monitor: 'AUC'
+    monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
     early_stop_patience: 5
@@ -103,7 +103,7 @@ DIN_bundle: # This is a config template
     model: DIN
     dataset_id: bundleseq
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -125,7 +125,37 @@ DIN_bundle: # This is a config template
     epochs: 100
     shuffle: True
     seed: 2023
-    monitor: 'AUC'
+    monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
     early_stop_patience: 5
+
+DIN_ml10m: # This is a config template
+    model: DIN
+    dataset_id: ml_10mseq
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: "Dice"
+    attention_hidden_units: [512, 256]
+    attention_hidden_activations: "Dice"
+    attention_output_activation: null
+    attention_dropout: 0.2
+    din_target_field: ["movie_id", "year", "timestamp", "Action", "Adventure", "Animation", "Children", "Comedy", "Crime", "Documentary", "Drama", "Fantasy", "Film_Noir", "Horror", "Musical", "Mystery", "Romance", "Sci_Fi", "Thriller", "War", "Western"]
+    din_sequence_field: ["movie_id_list", "year_list", "timestamp_list", "Action_list", "Adventure_list", "Animation_list", "Children_list", "Comedy_list", "Crime_list", "Documentary_list", "Drama_list", "Fantasy_list", "Film_Noir_list", "Horror_list", "Musical_list", "Mystery_list", "Romance_list", "Sci_Fi_list", "Thriller_list", "War_list", "Western_list"]
+    din_use_softmax: False
+    net_dropout: 0.1
+    batch_norm: True
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    save_best_only: True
