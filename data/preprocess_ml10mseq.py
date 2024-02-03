@@ -26,30 +26,30 @@ def gen_ml10mseq_data():
     ## Movies
     movies["year"] = movies["title"].swifter.apply(lambda x: x[-5:-1])
 
-    genres = [
-        "Action",
-        "Adventure",
-        "Animation",
-        "Children",
-        "Comedy",
-        "Crime",
-        "Documentary",
-        "Drama",
-        "Fantasy",
-        "Film_Noir",
-        "Horror",
-        "Musical",
-        "Mystery",
-        "Romance",
-        "Sci_Fi",
-        "Thriller",
-        "War",
-        "Western",
-    ]
-    for genre in genres:
-        movies[genre] = movies["genres"].apply(
-            lambda values: int(genre in values.split("|"))
-        )
+    # genres = [
+    #     "Action",
+    #     "Adventure",
+    #     "Animation",
+    #     "Children",
+    #     "Comedy",
+    #     "Crime",
+    #     "Documentary",
+    #     "Drama",
+    #     "Fantasy",
+    #     "Film_Noir",
+    #     "Horror",
+    #     "Musical",
+    #     "Mystery",
+    #     "Romance",
+    #     "Sci_Fi",
+    #     "Thriller",
+    #     "War",
+    #     "Western",
+    # ]
+    # for genre in genres:
+    #     movies[genre] = movies["genres"].apply(
+    #         lambda values: int(genre in values.split("|"))
+    #     )
 
     data = pd.merge(ratings, movies, on='movie_id')
     data['label'] = (data.rating > 3).astype('int')
@@ -57,7 +57,7 @@ def gen_ml10mseq_data():
     data.drop(['rating', "title", "genres"], axis=1, inplace=True)
     data = reduce_mem(data)
 
-    sequence_col = ["movie_id", "year", "timestamp", "label"] + genres
+    sequence_col = ["movie_id", "year", "timestamp", "label"] 
 
     sequence_list_col = [col+"_list" for col in sequence_col]
 

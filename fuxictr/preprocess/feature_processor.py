@@ -301,7 +301,7 @@ class FeatureProcessor(object):
     def transform(self, ddf):
         logging.info("Transform feature columns...")
         data_dict = dict()
-        for feature, feature_spec in self.feature_map.features.items():
+        for feature, feature_spec in tqdm(self.feature_map.features.items()):
             if feature in ddf.columns:
                 feature_type = feature_spec["type"]
                 feature_dtype = feature_spec["dtype"]

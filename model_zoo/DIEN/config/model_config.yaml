@@ -136,8 +136,8 @@ DIEN_ml10m: # This is a config template
     dnn_hidden_units: [1024, 512, 256]
     dnn_activations: Dice
     net_dropout: 0.2
-    dien_target_field: ["movie_id", "year", "timestamp", "Action", "Adventure", "Animation", "Children", "Comedy", "Crime", "Documentary", "Drama", "Fantasy", "Film_Noir", "Horror", "Musical", "Mystery", "Romance", "Sci_Fi", "Thriller", "War", "Western"]
-    dien_sequence_field: ["movie_id_list", "year_list", "timestamp_list", "Action_list", "Adventure_list", "Animation_list", "Children_list", "Comedy_list", "Crime_list", "Documentary_list", "Drama_list", "Fantasy_list", "Film_Noir_list", "Horror_list", "Musical_list", "Mystery_list", "Romance_list", "Sci_Fi_list", "Thriller_list", "War_list", "Western_list"]
+    dien_target_field: ["movie_id", "year", "timestamp"]
+    dien_sequence_field: ["movie_id_list", "year_list", "timestamp_list"]
     dien_neg_seq_field: []
     gru_type: AUGRU
     enable_sum_pooling: False

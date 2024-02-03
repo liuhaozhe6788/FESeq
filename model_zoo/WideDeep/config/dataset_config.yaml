@@ -43,7 +43,7 @@ ml_10m:
 
     min_categr_count: 1
     feature_cols:
-        [{name: ["user_id", "movie_id", "year", "timestamp", "Action", "Adventure", "Animation", "Children", "Comedy", "Crime", "Documentary", "Drama", "Fantasy", "Film_Noir", "Horror", "Musical", "Mystery", "Romance", "Sci_Fi", "Thriller", "War", "Western",],
+        [{name: ["user_id", "movie_id", "year", "timestamp"],
                  active: True, dtype: str, type: categorical}
         ]        
     label_col: {name: "label", dtype: float}
