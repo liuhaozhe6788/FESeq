@@ -57,7 +57,6 @@ DCN_eleme: # This is a config template
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
 
 DCN_bundle: # This is a config template
     model: DCN
@@ -81,7 +80,6 @@ DCN_bundle: # This is a config template
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
 
 DCN_ml10m: # This is a config template
     model: DCN

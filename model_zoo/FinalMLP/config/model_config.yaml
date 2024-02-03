@@ -126,7 +126,7 @@ DualMLP_eleme: # This is a config template
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
-    early_stop_patience: 5
+
 
 DualMLP_bundle: # This is a config template
     model: DualMLP
@@ -159,7 +159,7 @@ DualMLP_bundle: # This is a config template
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
-    early_stop_patience: 5
+
 
 DualMLP_ml10m: # This is a config template
     model: DualMLP
@@ -224,7 +224,6 @@ FinalMLP_eleme: # This is a config template
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
-    early_stop_patience: 5
 
 FinalMLP_bundle: # This is a config template
     model: FinalMLP
@@ -257,7 +256,6 @@ FinalMLP_bundle: # This is a config template
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
-    early_stop_patience: 5
 
 FinalMLP_ml10m: # This is a config template
     model: FinalMLP

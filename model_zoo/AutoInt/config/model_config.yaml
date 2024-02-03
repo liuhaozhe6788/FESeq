@@ -70,7 +70,6 @@ AutoInt_eleme:
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
-    early_stop_patience: 5
 
 AutoInt_bundle:
     model: AutoInt
@@ -101,7 +100,6 @@ AutoInt_bundle:
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
-    early_stop_patience: 5
 
 AutoInt_ml10m:
     model: AutoInt

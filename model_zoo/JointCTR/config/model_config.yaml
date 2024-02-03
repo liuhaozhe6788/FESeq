@@ -85,7 +85,6 @@ JointCTR_eleme: # This is a config template
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
     save_best_only: True
 
 JointCTR_bundle: # This is a config template
@@ -127,7 +126,6 @@ JointCTR_bundle: # This is a config template
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
     save_best_only: True
 
 JointCTR_ml10m: # This is a config template

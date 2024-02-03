@@ -100,7 +100,7 @@ ONNv2_eleme: # This is a config template
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
-    early_stop_patience: 5
+
 
 ONNv2_bundle: # This is a config template
     model: ONNv2
@@ -124,7 +124,7 @@ ONNv2_bundle: # This is a config template
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
     save_best_only: True
-    early_stop_patience: 5
+
 
 ONNv2_ml10m: # This is a config template
     model: ONNv2

@@ -83,7 +83,6 @@ DMR_eleme: # This is a config template
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
     save_best_only: True
 
 DMR_bundle: # This is a config template
@@ -121,7 +120,6 @@ DMR_bundle: # This is a config template
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
     save_best_only: True
 
 DMR_ml10m: # This is a config template
