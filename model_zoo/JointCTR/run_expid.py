@@ -66,6 +66,7 @@ if __name__ == '__main__':
     model = model_class(feature_map, **params)
     model.count_parameters() # print number of parameters used in model
     train_result = {}
+    valid_result = {}
     if args["mode"] == "train":
         train_gen, valid_gen = H5DataLoader(feature_map, stage='train', **params).make_iterator()
         train_time = model.fit(train_gen, validation_data=valid_gen, **params)
@@ -88,4 +89,4 @@ if __name__ == '__main__':
         fw.write(' {},[command] python {},[exp_id] {},[dataset_id] {},[train] {},[val] {},[test] {}\n' \
             .format(datetime.now().strftime('%Y%m%d-%H%M%S'), 
                     ' '.join(sys.argv), experiment_id, params['dataset_id'],
-                    print_to_list(train_result), "N.A.", print_to_list(test_result)))
+                    print_to_list(train_result), print_to_list(valid_result), print_to_list(test_result)))

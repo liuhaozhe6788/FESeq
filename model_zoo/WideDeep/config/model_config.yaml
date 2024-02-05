@@ -50,7 +50,7 @@ WideDeep_eleme: # This is a config template
     net_dropout: 0.3
     batch_size: 4096
     embedding_dim: 32
-    epochs: 100
+    epochs: 1
     shuffle: True
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
@@ -73,7 +73,7 @@ WideDeep_bundle: # This is a config template
     net_dropout: 0.2
     batch_size: 4096
     embedding_dim: 16
-    epochs: 100
+    epochs: 1
     shuffle: True
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
@@ -96,7 +96,7 @@ WideDeep_ml10m: # This is a config template
     net_dropout: 0.1
     batch_size: 4096
     embedding_dim: 10
-    epochs: 100
+    epochs: 1
     shuffle: True
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
