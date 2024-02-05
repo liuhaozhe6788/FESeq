@@ -31,11 +31,11 @@ def evaluate_metrics(y_true, y_pred, metrics, group_id=None):
         elif metric == 'AUC':
             return_dict[metric] = roc_auc_score(y_true, y_pred)
         elif metric == 'precision':
-            return_dict[metric] = precision_score(y_true, np.floor(y_pred+0.5), average='micro')
+            return_dict[metric] = precision_score(y_true, np.floor(y_pred+0.5), average='weighted')
         elif metric == 'recall':
-            return_dict[metric] = recall_score(y_true, np.floor(y_pred+0.5), average='micro')
+            return_dict[metric] = recall_score(y_true, np.floor(y_pred+0.5), average='weighted')
         elif metric == 'f1':
-            return_dict[metric] = f1_score(y_true, np.floor(y_pred+0.5), average='micro')
+            return_dict[metric] = f1_score(y_true, np.floor(y_pred+0.5), average='weighted')
         elif metric in ["gAUC", "avgAUC", "MRR"] or metric.startswith("NDCG"):
             return_dict[metric] = 0
             group_metrics.append(metric)

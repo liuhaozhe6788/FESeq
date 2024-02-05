@@ -65,16 +65,17 @@ if __name__ == '__main__':
     model_class = getattr(model_zoo, params['model'])
     model = model_class(feature_map, **params)
     model.count_parameters() # print number of parameters used in model
-
+    train_result = {}
     if args["mode"] == "train":
         train_gen, valid_gen = H5DataLoader(feature_map, stage='train', **params).make_iterator()
-        model.fit(train_gen, validation_data=valid_gen, **params)
+        train_time = model.fit(train_gen, validation_data=valid_gen, **params)
+        train_result["train_time"] = train_time
 
         logging.info('****** Validation evaluation ******')
         valid_result = model.evaluate(valid_gen)
         del train_gen, valid_gen
         gc.collect()
-        
+    
     logging.info('******** Test evaluation ********')
     model.load_weights(model.checkpoint)
     test_gen = H5DataLoader(feature_map, stage='test', **params).make_iterator()
@@ -87,6 +88,4 @@ if __name__ == '__main__':
         fw.write(' {},[command] python {},[exp_id] {},[dataset_id] {},[train] {},[val] {},[test] {}\n' \
             .format(datetime.now().strftime('%Y%m%d-%H%M%S'), 
                     ' '.join(sys.argv), experiment_id, params['dataset_id'],
-                    "N.A.", "N.A.", print_to_list(test_result)))
-
-
+                    print_to_list(train_result), "N.A.", print_to_list(test_result)))

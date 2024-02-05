@@ -24,6 +24,7 @@ from fuxictr.metrics import evaluate_metrics
 from fuxictr.pytorch.torch_utils import get_device, get_optimizer, get_loss, get_regularizer
 from fuxictr.utils import print_to_json, Monitor, save_attention_matrix, save_rel_score_relation
 from tqdm import tqdm
+from thop import profile
 import datetime
 from pathlib import Path
         
@@ -181,11 +182,12 @@ class BaseModel(nn.Module):
 
         end.record()
         torch.cuda.synchronize()
-
-        logging.info("Training time: {:.6f} GPU mins".format(start.elapsed_time(end)/6e4))
+        training_time = start.elapsed_time(end)/1e3
+        logging.info("Training time: {:.6f} GPU secs".format(training_time))
         logging.info("Training finished.")
         logging.info("Load best model: {}".format(self.checkpoint))
         self.load_weights(self.checkpoint)
+        return training_time
 
     def checkpoint_and_earlystop(self, logs, min_delta=1e-6):
         monitor_value = self._monitor.get_value(logs)
@@ -252,6 +254,7 @@ class BaseModel(nn.Module):
             y_pred = []
             y_true = []
             group_id = []
+            num_samples = data_generator.num_samples
             if test and self._save_attn_matrix:
                 attn_matrixs = []
 
@@ -260,12 +263,20 @@ class BaseModel(nn.Module):
             if self._verbose > 0:
                 data_generator = tqdm(data_generator, disable=False, file=sys.stdout)
 
+            # if test:
+            #     start = torch.cuda.Event(enable_timing=True)
+            #     end = torch.cuda.Event(enable_timing=True)
+            #     start.record()
+                
             if test:
-                start = torch.cuda.Event(enable_timing=True)
-                end = torch.cuda.Event(enable_timing=True)
-                start.record()
+                total_flops = 0
 
             for batch_data in data_generator:
+                if test:
+                    input = batch_data
+                    macs,_ = profile(self, inputs=(input, ))
+                    total_flops += macs*2
+
                 return_dict = self.forward(batch_data)
                 y_pred.extend(return_dict["y_pred"].data.cpu().numpy().reshape(-1))
                 y_true.extend(self.get_labels(batch_data).data.cpu().numpy().reshape(-1))
@@ -276,10 +287,10 @@ class BaseModel(nn.Module):
                 if self.feature_map.group_id is not None:
                     group_id.extend(self.get_group_id(batch_data).numpy().reshape(-1))
 
-            if test:
-                end.record()
-                torch.cuda.synchronize()
-                logging.info("Inference time: {:.6f} GPU mins".format(start.elapsed_time(end)/6e4))
+            # if test:
+            #     end.record()
+            #     torch.cuda.synchronize()
+            #     logging.info("Inference time: {:.6f} GPU secs".format(start.elapsed_time(end)/1e3))
 
             y_pred = np.array(y_pred, np.float64)
             y_true = np.array(y_true, np.float64)
@@ -299,6 +310,10 @@ class BaseModel(nn.Module):
                 val_logs = self.evaluate_metrics(y_true, y_pred, metrics, group_id)
             else:
                 val_logs = self.evaluate_metrics(y_true, y_pred, self.validation_metrics, group_id)
+
+            if test:
+                val_logs["flops"] = total_flops/num_samples
+
             logging.info('[Metrics] ' + ' - '.join('{}: {:.6f}'.format(k, v) for k, v in val_logs.items()))
             return val_logs
 
