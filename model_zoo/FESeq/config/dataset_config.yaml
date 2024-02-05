@@ -75,3 +75,21 @@ bundleseq_abstime:
             {name: "pay_mean_list", active: True, dtype: float, type: sequence, splitter: ^, max_len: 8, share_embedding: "pay_mean",  feature_encoder: null, normalizer: MinMaxScaler, fill_na: ""}
                  ]                      
     label_col: {name: "impression_result", dtype: float}
+
+ml_10mseq_abstime:
+    data_root: ../../data
+    data_format: csv
+    train_data: ../../data/ml_10mseq_abstime/train_data.csv
+    valid_data: ../../data/ml_10mseq_abstime/val_data.csv
+    test_data: ../../data/ml_10mseq_abstime/test_data.csv
+    min_categr_count: 1
+    feature_cols:
+        [{name: ["user_id", "movie_id", "year"],
+                 active: True, dtype: str, type: categorical},
+         {name: "timestamp",
+                 active: True, dtype: str, type: categorical, remap: False},    
+         {name: "movie_id_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "movie_id",  feature_encoder: null},
+         {name: "year_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "year",  feature_encoder: null},
+         {name: "timestamp_list", active: True, dtype: str, type: sequence, splitter: ^, max_len: 10, share_embedding: "timestamp",  feature_encoder: null, remap: False}
+         ]
+    label_col: {name: "label", dtype: float}

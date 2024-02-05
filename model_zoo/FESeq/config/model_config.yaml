@@ -16,7 +16,7 @@ FESeq_test:
     model: FESeq
     dataset_id: movielens1mseq_toy
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -38,7 +38,7 @@ FESeq_test:
     use_position_emb: True
     use_causal_mask: True
     batch_norm: False
-    epochs: 1
+    epochs: 100
     shuffle: True
     seed: 20222023
     monitor: {'AUC': 1, 'logloss': -1}
@@ -48,7 +48,7 @@ FESeq_0_eleme: # BST+default_field
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -83,15 +83,15 @@ FESeq_0_eleme: # BST+default_field
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_0_bundle: # BST+default field
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
-    optimizer: adam
+    optimizer: adam 
     learning_rate: 1.0e-3
     embedding_regularizer: 0.01
     net_regularizer: 0
@@ -125,13 +125,54 @@ FESeq_0_bundle: # BST+default field
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
+
+FESeq_0_ml10m: # BST+default field
+    model: FESeq
+    dataset_id: ml_10mseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 1
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.1
+    layer_norm: False
+    use_residual: True
+    default_field: ["user_id"]
+    target_field: ["movie_id", "year"]
+    sequence_field: ["movie_id_list", "year_list"]
+    time_keys: ["timestamp", "timestamp_list"]
+    seq_pooling_type: target
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: False
+    seq_feature_interaction_layers: 1
+    use_position_emb: False
+    use_time_emb: True
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
 
 FESeq_1_eleme: # BST+pos embedding
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -166,13 +207,13 @@ FESeq_1_eleme: # BST+pos embedding
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_1_bundle: # BST+pos embedding
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -208,13 +249,54 @@ FESeq_1_bundle: # BST+pos embedding
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
-FESeq_2_eleme: # BST+pos embedding+2 layers autoint
+FESeq_1_ml10m: # BST+pos embedding
+    model: FESeq
+    dataset_id: ml_10mseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 1
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.1
+    layer_norm: False
+    use_residual: True
+    default_field: ["user_id"]
+    target_field: ["movie_id", "year"]
+    sequence_field: ["movie_id_list", "year_list"]
+    time_keys: ["timestamp", "timestamp_list"]
+    seq_pooling_type: target
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: False
+    seq_feature_interaction_layers: 1
+    use_position_emb: True
+    use_time_emb: True
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
+
+FESeq_2_eleme: # BST+pos embedding+weighted sum pooling
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -234,10 +316,12 @@ FESeq_2_eleme: # BST+pos embedding+2 layers autoint
     default_field: ["user_id","gender","visit_city","is_super_vip","geohash12","avg_price", "ctr_30", "ord_30", "total_amt_30"]
     target_field: ["shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","hours","time_type","weekdays", "rank_7","rank_30","rank_90"]
     sequence_field: ["shop_id_list","item_id_list","city_id_list","district_id_list","shop_aoi_id_list","shop_geohash_6_list","shop_geohash_12_list","category_1_id_list","hours_list","time_type_list","weekdays_list", "rank_7_list","rank_30_list","rank_90_list"]
+    target_item_field: ["shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","rank_7","rank_30","rank_90"]
     time_keys: ["times", "times_list"]
-    seq_pooling_type: target
+    seq_pooling_type: weighted_sum
+    rel_score_hidden_dim: 128
     interaction_layer_name: autoint
-    use_seq_feature_interaction: True
+    use_seq_feature_interaction: False
     seq_feature_interaction_layers: 2
     use_position_emb: True
     use_time_emb: True
@@ -250,14 +334,13 @@ FESeq_2_eleme: # BST+pos embedding+2 layers autoint
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
-    save_attn_matrix: True
+    early_stop_patience: 2
 
-FESeq_2_bundle: # BST+pos embedding+2 layers autoint
+FESeq_2_bundle: # BST+pos embedding+weighted sum pooling
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -278,10 +361,12 @@ FESeq_2_bundle: # BST+pos embedding+2 layers autoint
                       "register_device_brand", "register_os", "register_time","register_country_arpu"]
     target_field: ["bundle_id","bundle_price","island_no","spin_stock","coin_stock","diamond_stock","island_complete_gap_coin","island_complete_gap_building_cnt","tournament_rank","login_cnt_1d","ads_watch_cnt_1d","register_country_arpu","life_time","star","battle_pass_exp","is_up_to_date_version","pet_heart_stock","pet_exp_stock","friend_cnt","social_friend_cnt","pay_amt","pay_cnt","pay_per_day","pay_mean"]
     sequence_field: ["bundle_id_list","bundle_price_list","island_no_list","spin_stock_list","coin_stock_list","diamond_stock_list","island_complete_gap_coin_list","island_complete_gap_building_cnt_list","tournament_rank_list","login_cnt_1d_list","ads_watch_cnt_1d_list","register_country_arpu_list","life_time_list","star_list","battle_pass_exp_list","is_up_to_date_version_list","pet_heart_stock_list","pet_exp_stock_list","friend_cnt_list","social_friend_cnt_list","pay_amt_list","pay_cnt_list","pay_per_day_list","pay_mean_list"]
+    target_item_field: ["bundle_id","bundle_price"]
     time_keys: ["ftime", "ftime_list"]
-    seq_pooling_type: target
+    seq_pooling_type: weighted_sum
+    rel_score_hidden_dim: 32
     interaction_layer_name: autoint
-    use_seq_feature_interaction: True
+    use_seq_feature_interaction: False
     seq_feature_interaction_layers: 2
     use_position_emb: True
     use_time_emb: True
@@ -294,14 +379,56 @@ FESeq_2_bundle: # BST+pos embedding+2 layers autoint
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
-    save_attn_matrix: True
+    early_stop_patience: 2
+
+FESeq_2_ml10m: # BST+pos embedding+weighted sum pooling
+    model: FESeq
+    dataset_id: ml_10mseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 1
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.1
+    layer_norm: False
+    use_residual: True
+    default_field: ["user_id"]
+    target_field: ["movie_id", "year"]
+    sequence_field: ["movie_id_list", "year_list"]
+    target_item_field: ["movie_id", "year"]
+    time_keys: ["timestamp", "timestamp_list"]
+    seq_pooling_type: weighted_sum
+    rel_score_hidden_dim: 32
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: False
+    seq_feature_interaction_layers: 2
+    use_position_emb: True
+    use_time_emb: True
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
 
 FESeq_3_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -341,7 +468,7 @@ FESeq_3_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -349,7 +476,7 @@ FESeq_3_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -390,15 +517,60 @@ FESeq_3_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
+
+FESeq_3_ml10m: # BST+pos embedding+weighted sum pooling
+    model: FESeq
+    dataset_id: ml_10mseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 1
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.1
+    layer_norm: False
+    use_residual: True
+    default_field: ["user_id"]
+    target_field: ["movie_id", "year"]
+    sequence_field: ["movie_id_list", "year_list"]
+    target_item_field: ["movie_id", "year"]
+    time_keys: ["timestamp", "timestamp_list"]
+    seq_pooling_type: weighted_sum
+    rel_score_hidden_dim: 32
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: True
+    seq_feature_interaction_layers: 2
+    use_item_feature_interaction: True
+    item_feature_interaction_layers: 2
+    use_position_emb: True
+    use_time_emb: True
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
 
 FESeq_3_10_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feature interaction layers=(1,0)
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -438,13 +610,13 @@ FESeq_3_10_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feat
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_3_10_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+feature interaction layers=(1,0)
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -485,13 +657,13 @@ FESeq_3_10_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+fea
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_3_11_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feature interaction layers=(1,1)
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -531,7 +703,7 @@ FESeq_3_11_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feat
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -539,7 +711,7 @@ FESeq_3_11_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+fea
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -580,7 +752,7 @@ FESeq_3_11_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+fea
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -588,7 +760,7 @@ FESeq_3_20_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feat
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -628,13 +800,13 @@ FESeq_3_20_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feat
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_3_20_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+feature interaction layers=(2,0)
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -675,13 +847,13 @@ FESeq_3_20_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+fea
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_3_21_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feature interaction layers=(2,1)
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -721,7 +893,7 @@ FESeq_3_21_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feat
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -729,7 +901,7 @@ FESeq_3_21_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+fea
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -770,7 +942,7 @@ FESeq_3_21_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+fea
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -778,7 +950,7 @@ FESeq_3_30_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feat
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -818,13 +990,13 @@ FESeq_3_30_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feat
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_3_30_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+feature interaction layers=(3,0)
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -865,13 +1037,13 @@ FESeq_3_30_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+fea
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_3_31_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feature interaction layers=(3,1)
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -911,7 +1083,7 @@ FESeq_3_31_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feat
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -919,7 +1091,7 @@ FESeq_3_31_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+fea
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -960,7 +1132,7 @@ FESeq_3_31_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+fea
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -968,7 +1140,7 @@ FESeq_3_32_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feat
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -1008,7 +1180,7 @@ FESeq_3_32_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feat
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -1016,7 +1188,7 @@ FESeq_3_32_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+fea
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -1057,7 +1229,7 @@ FESeq_3_32_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+fea
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -1065,7 +1237,7 @@ FESeq_3_33_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feat
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -1105,7 +1277,7 @@ FESeq_3_33_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+feat
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -1113,7 +1285,7 @@ FESeq_3_33_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+fea
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -1154,7 +1326,7 @@ FESeq_3_33_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+fea
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -1162,7 +1334,7 @@ FESeq_3_8_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+embed
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -1202,7 +1374,7 @@ FESeq_3_8_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+embed
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -1210,7 +1382,7 @@ FESeq_3_8_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+embe
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -1251,7 +1423,7 @@ FESeq_3_8_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+embe
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -1259,7 +1431,7 @@ FESeq_3_24_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+embe
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -1299,7 +1471,7 @@ FESeq_3_24_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+embe
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -1307,7 +1479,7 @@ FESeq_3_24_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+emb
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -1348,7 +1520,7 @@ FESeq_3_24_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+emb
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -1356,7 +1528,7 @@ FESeq_3_32_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+embe
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -1396,7 +1568,7 @@ FESeq_3_32_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling+embe
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -1404,7 +1576,7 @@ FESeq_3_32_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+emb
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -1445,7 +1617,7 @@ FESeq_3_32_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+emb
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -1453,7 +1625,7 @@ FESeq_4_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-time em
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -1493,13 +1665,13 @@ FESeq_4_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-time em
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_4_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-time embedding
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -1540,13 +1712,13 @@ FESeq_4_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-time e
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_5_eleme: # BST+2 layers autoint+weighted sum pooling
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -1586,13 +1758,13 @@ FESeq_5_eleme: # BST+2 layers autoint+weighted sum pooling
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_5_bundle: # BST+2 layers autoint+weighted sum pooling
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -1633,13 +1805,13 @@ FESeq_5_bundle: # BST+2 layers autoint+weighted sum pooling
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_6_eleme: # BST+pos embedding+weighted sum pooling
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -1679,13 +1851,13 @@ FESeq_6_eleme: # BST+pos embedding+weighted sum pooling
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_6_bundle: # BST+pos embedding+weighted sum pooling
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -1726,13 +1898,13 @@ FESeq_6_bundle: # BST+pos embedding+weighted sum pooling
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_7_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-default field
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -1773,13 +1945,13 @@ FESeq_7_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-default
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_7_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-default field
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -1820,13 +1992,13 @@ FESeq_7_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-defaul
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_8_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-use scale
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -1867,13 +2039,13 @@ FESeq_8_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-use sca
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_8_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-use scale
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -1915,13 +2087,13 @@ FESeq_8_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-use sc
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_9_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling(dot attention)
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -1962,13 +2134,13 @@ FESeq_9_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling(dot att
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_9_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling(dot attention)
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -2010,13 +2182,13 @@ FESeq_9_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling(dot at
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_10_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling(din attention)
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -2057,13 +2229,13 @@ FESeq_10_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling(din at
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_10_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling(din attention)
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -2105,13 +2277,13 @@ FESeq_10_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling(din a
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_11_eleme: # BST+pos embedding+2 layers autoint+mean pooling
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -2150,13 +2322,13 @@ FESeq_11_eleme: # BST+pos embedding+2 layers autoint+mean pooling
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 FESeq_11_bundle: # BST+pos embedding+2 layers autoint+mean pooling
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -2196,14 +2368,14 @@ FESeq_11_bundle: # BST+pos embedding+2 layers autoint+mean pooling
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
 
 
 FESeq_12_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-causal mask
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -2243,7 +2415,7 @@ FESeq_12_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-causal
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
 
@@ -2251,7 +2423,7 @@ FESeq_12_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-causa
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC']
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-4
@@ -2292,6 +2464,6 @@ FESeq_12_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-causa
     seed: 2023
     monitor: {'AUC': 1, 'logloss': 0}
     monitor_mode: 'max'
-    early_stop_patience: 5
+    early_stop_patience: 2
     save_attn_matrix: True
     save_rel_score_relation: True
