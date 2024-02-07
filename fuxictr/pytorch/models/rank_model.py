@@ -272,10 +272,10 @@ class BaseModel(nn.Module):
                 total_flops = 0
 
             for batch_data in data_generator:
-                if test:
-                    input = batch_data
-                    macs,_ = profile(self, inputs=(input, ))
-                    total_flops += macs*2
+                # if test:
+                #     input = batch_data
+                #     macs,_ = profile(self, inputs=(input, ))
+                #     total_flops += macs*2
 
                 return_dict = self.forward(batch_data)
                 y_pred.extend(return_dict["y_pred"].data.cpu().numpy().reshape(-1))

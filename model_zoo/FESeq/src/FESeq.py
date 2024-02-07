@@ -240,7 +240,7 @@ class FESeq(BaseModel):
             concat_time = torch.cat([sequence_time, target_time.unsqueeze(1)], dim=1)
 
             delta_times = torch.unsqueeze(target_time, dim=sequence_time.dim()-1) - concat_time
-
+            delta_times = delta_times.long()
             delta_times = torch.where(delta_times < 0, 0, delta_times)
             if self.time_log_base != -1:
                 delta_times = torch.log(delta_times+1)

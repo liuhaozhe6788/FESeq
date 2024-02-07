@@ -34,6 +34,36 @@ import os
 from pathlib import Path
 
 
+def train_val_test(feature_map, params):
+    model = model_class(feature_map, params=params, **params)
+    model.count_parameters() # print number of parameters used in model
+    train_result = {}
+    valid_result = {}
+    if args["mode"] == "train":
+        train_gen, valid_gen = H5DataLoader(feature_map, stage='train', **params).make_iterator()
+        train_time = model.fit(train_gen, validation_data=valid_gen, **params)
+        train_result["train_time"] = train_time
+
+        logging.info('****** Validation evaluation ******')
+        valid_result = model.evaluate(valid_gen)
+        del train_gen, valid_gen
+        gc.collect()
+    
+    logging.info('******** Test evaluation ********')
+    model.load_weights(model.checkpoint)
+    test_gen = H5DataLoader(feature_map, stage='test', **params).make_iterator()
+    test_result = {}
+    if test_gen:
+        test_result = model.evaluate(test_gen, test=True)
+    
+    result_filename = Path(args['config']).name.replace(".yaml", "") + '.csv'
+    with open(result_filename, 'a+') as fw:
+        fw.write(' {},[command] python {},[exp_id] {},[dataset_id] {},[train] {},[val] {},[test] {}\n' \
+            .format(datetime.now().strftime('%Y%m%d-%H%M%S'), 
+                    ' '.join(sys.argv), experiment_id, params['dataset_id'],
+                    print_to_list(train_result), print_to_list(valid_result), print_to_list(test_result)))
+            
+
 if __name__ == '__main__':
     ''' Usage: python run_expid.py --config {config_dir} --expid {experiment_id} --gpu {gpu_device_id}
     '''
@@ -64,30 +94,12 @@ if __name__ == '__main__':
     logging.info("Feature specs: " + print_to_json(feature_map.features))
     
     model_class = getattr(model_zoo, params['model'])
-    model = model_class(feature_map, params=params, **params)
-    model.count_parameters() # print number of parameters used in model
-    train_result = {}
-    valid_result = {}
-    if args["mode"] == "train":
-        train_gen, valid_gen = H5DataLoader(feature_map, stage='train', **params).make_iterator()
-        train_time = model.fit(train_gen, validation_data=valid_gen, **params)
-        train_result["train_time"] = train_time
 
-        logging.info('****** Validation evaluation ******')
-        valid_result = model.evaluate(valid_gen)
-        del train_gen, valid_gen
-        gc.collect()
-    
-    logging.info('******** Test evaluation ********')
-    model.load_weights(model.checkpoint)
-    test_gen = H5DataLoader(feature_map, stage='test', **params).make_iterator()
-    test_result = {}
-    if test_gen:
-      test_result = model.evaluate(test_gen, test=True)
-    
-    result_filename = Path(args['config']).name.replace(".yaml", "") + '.csv'
-    with open(result_filename, 'a+') as fw:
-        fw.write(' {},[command] python {},[exp_id] {},[dataset_id] {},[train] {},[val] {},[test] {}\n' \
-            .format(datetime.now().strftime('%Y%m%d-%H%M%S'), 
-                    ' '.join(sys.argv), experiment_id, params['dataset_id'],
-                    print_to_list(train_result), print_to_list(valid_result), print_to_list(test_result)))
+    if isinstance(params["net_dropout"], list) and isinstance(params["attention_dropout"], list) and isinstance(params["fi_dropout"], list):
+        net_dropouts, attn_dropouts, fi_dropouts = params["net_dropout"], params["attention_dropout"], params["fi_dropout"]
+        for i in range(len(net_dropouts)):
+            params["net_dropout"], params["attention_dropout"], params["fi_dropout"] = net_dropouts[i], attn_dropouts[i], fi_dropouts[i]
+            train_val_test(feature_map, params)
+
+    else:
+        train_val_test(feature_map, params)

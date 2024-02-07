@@ -188,7 +188,7 @@ FESeq_1_eleme: # BST+pos embedding
     net_dropout: 0.1
     layer_norm: False
     use_residual: True
-    default_field: ["user_id","gender","visit_city","is_super_vip","geohash12","avg_price", "ctr_30", "ord_30", "total_amt_30"]
+    default_field: []
     target_field: ["shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","hours","time_type","weekdays", "rank_7","rank_30","rank_90"]
     sequence_field: ["shop_id_list","item_id_list","city_id_list","district_id_list","shop_aoi_id_list","shop_geohash_6_list","shop_geohash_12_list","category_1_id_list","hours_list","time_type_list","weekdays_list", "rank_7_list","rank_30_list","rank_90_list"]
     time_keys: ["times", "times_list"]
@@ -229,8 +229,7 @@ FESeq_1_bundle: # BST+pos embedding
     net_dropout: 0.
     layer_norm: False
     use_residual: True
-    default_field: ["uid", "is_visitor", "gender", "register_country", "register_device",
-                      "register_device_brand", "register_os", "register_time","register_country_arpu"]
+    default_field: []
     target_field: ["bundle_id","bundle_price","island_no","spin_stock","coin_stock","diamond_stock","island_complete_gap_coin","island_complete_gap_building_cnt","tournament_rank","login_cnt_1d","ads_watch_cnt_1d","register_country_arpu","life_time","star","battle_pass_exp","is_up_to_date_version","pet_heart_stock","pet_exp_stock","friend_cnt","social_friend_cnt","pay_amt","pay_cnt","pay_per_day","pay_mean"]
     sequence_field: ["bundle_id_list","bundle_price_list","island_no_list","spin_stock_list","coin_stock_list","diamond_stock_list","island_complete_gap_coin_list","island_complete_gap_building_cnt_list","tournament_rank_list","login_cnt_1d_list","ads_watch_cnt_1d_list","register_country_arpu_list","life_time_list","star_list","battle_pass_exp_list","is_up_to_date_version_list","pet_heart_stock_list","pet_exp_stock_list","friend_cnt_list","social_friend_cnt_list","pay_amt_list","pay_cnt_list","pay_per_day_list","pay_mean_list"]
     time_keys: ["ftime", "ftime_list"]
@@ -271,7 +270,7 @@ FESeq_1_ml10m: # BST+pos embedding
     net_dropout: 0.1
     layer_norm: False
     use_residual: True
-    default_field: ["user_id"]
+    default_field: [ ]
     target_field: ["movie_id", "year"]
     sequence_field: ["movie_id_list", "year_list"]
     time_keys: ["timestamp", "timestamp_list"]
@@ -292,7 +291,7 @@ FESeq_1_ml10m: # BST+pos embedding
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_2_eleme: # BST+pos embedding+weighted sum pooling
+FESeq_2_eleme: # BST+default field+pos embedding
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
@@ -300,51 +299,7 @@ FESeq_2_eleme: # BST+pos embedding+weighted sum pooling
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
-    embedding_regularizer: 0.1
-    net_regularizer: 0
-    batch_size: 4096
-    embedding_dim: 16
-    dnn_hidden_units: [1024, 512, 256]
-    dnn_activations: leaky_relu
-    num_heads: 8
-    stacked_transformer_layers: 1
-    attention_dropout: 0.1
-    net_dropout: 0.
-    fi_dropout: 0.1
-    layer_norm: False
-    use_residual: True
-    default_field: ["user_id","gender","visit_city","is_super_vip","geohash12","avg_price", "ctr_30", "ord_30", "total_amt_30"]
-    target_field: ["shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","hours","time_type","weekdays", "rank_7","rank_30","rank_90"]
-    sequence_field: ["shop_id_list","item_id_list","city_id_list","district_id_list","shop_aoi_id_list","shop_geohash_6_list","shop_geohash_12_list","category_1_id_list","hours_list","time_type_list","weekdays_list", "rank_7_list","rank_30_list","rank_90_list"]
-    target_item_field: ["shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","rank_7","rank_30","rank_90"]
-    time_keys: ["times", "times_list"]
-    seq_pooling_type: weighted_sum
-    rel_score_hidden_dim: 128
-    interaction_layer_name: autoint
-    use_seq_feature_interaction: False
-    seq_feature_interaction_layers: 2
-    use_position_emb: True
-    use_time_emb: True
-    num_time_embeddings: 4001
-    time_log_base: -1
-    use_causal_mask: True
-    batch_norm: False
-    epochs: 100
-    shuffle: True
-    seed: 2023
-    monitor: {'AUC': 1, 'logloss': 0}
-    monitor_mode: 'max'
-    early_stop_patience: 2
-
-FESeq_2_bundle: # BST+pos embedding+weighted sum pooling
-    model: FESeq
-    dataset_id: bundleseq_abstime
-    loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
-    task: binary_classification
-    optimizer: adam
-    learning_rate: 1.0e-4
-    embedding_regularizer: 0.1
+    embedding_regularizer: 0.01
     net_regularizer: 0
     batch_size: 4096
     embedding_dim: 16
@@ -354,20 +309,16 @@ FESeq_2_bundle: # BST+pos embedding+weighted sum pooling
     stacked_transformer_layers: 1
     attention_dropout: 0.1
     net_dropout: 0.1
-    fi_dropout: 0.1
     layer_norm: False
     use_residual: True
-    default_field: ["uid", "is_visitor", "gender", "register_country", "register_device",
-                      "register_device_brand", "register_os", "register_time","register_country_arpu"]
-    target_field: ["bundle_id","bundle_price","island_no","spin_stock","coin_stock","diamond_stock","island_complete_gap_coin","island_complete_gap_building_cnt","tournament_rank","login_cnt_1d","ads_watch_cnt_1d","register_country_arpu","life_time","star","battle_pass_exp","is_up_to_date_version","pet_heart_stock","pet_exp_stock","friend_cnt","social_friend_cnt","pay_amt","pay_cnt","pay_per_day","pay_mean"]
-    sequence_field: ["bundle_id_list","bundle_price_list","island_no_list","spin_stock_list","coin_stock_list","diamond_stock_list","island_complete_gap_coin_list","island_complete_gap_building_cnt_list","tournament_rank_list","login_cnt_1d_list","ads_watch_cnt_1d_list","register_country_arpu_list","life_time_list","star_list","battle_pass_exp_list","is_up_to_date_version_list","pet_heart_stock_list","pet_exp_stock_list","friend_cnt_list","social_friend_cnt_list","pay_amt_list","pay_cnt_list","pay_per_day_list","pay_mean_list"]
-    target_item_field: ["bundle_id","bundle_price"]
-    time_keys: ["ftime", "ftime_list"]
-    seq_pooling_type: weighted_sum
-    rel_score_hidden_dim: 32
+    default_field: ["user_id","gender","visit_city","is_super_vip","geohash12","avg_price", "ctr_30", "ord_30", "total_amt_30"]
+    target_field: ["shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","hours","time_type","weekdays", "rank_7","rank_30","rank_90"]
+    sequence_field: ["shop_id_list","item_id_list","city_id_list","district_id_list","shop_aoi_id_list","shop_geohash_6_list","shop_geohash_12_list","category_1_id_list","hours_list","time_type_list","weekdays_list", "rank_7_list","rank_30_list","rank_90_list"]
+    time_keys: ["times", "times_list"]
+    seq_pooling_type: target
     interaction_layer_name: autoint
     use_seq_feature_interaction: False
-    seq_feature_interaction_layers: 2
+    seq_feature_interaction_layers: 1
     use_position_emb: True
     use_time_emb: True
     num_time_embeddings: 4001
@@ -381,7 +332,49 @@ FESeq_2_bundle: # BST+pos embedding+weighted sum pooling
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_2_ml10m: # BST+pos embedding+weighted sum pooling
+FESeq_2_bundle: # BST+default field+pos embedding
+    model: FESeq
+    dataset_id: bundleseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 16
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 8
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.
+    layer_norm: False
+    use_residual: True
+    default_field: ["uid", "is_visitor", "gender", "register_country", "register_device",
+                      "register_device_brand", "register_os", "register_time","register_country_arpu"]
+    target_field: ["bundle_id","bundle_price","island_no","spin_stock","coin_stock","diamond_stock","island_complete_gap_coin","island_complete_gap_building_cnt","tournament_rank","login_cnt_1d","ads_watch_cnt_1d","register_country_arpu","life_time","star","battle_pass_exp","is_up_to_date_version","pet_heart_stock","pet_exp_stock","friend_cnt","social_friend_cnt","pay_amt","pay_cnt","pay_per_day","pay_mean"]
+    sequence_field: ["bundle_id_list","bundle_price_list","island_no_list","spin_stock_list","coin_stock_list","diamond_stock_list","island_complete_gap_coin_list","island_complete_gap_building_cnt_list","tournament_rank_list","login_cnt_1d_list","ads_watch_cnt_1d_list","register_country_arpu_list","life_time_list","star_list","battle_pass_exp_list","is_up_to_date_version_list","pet_heart_stock_list","pet_exp_stock_list","friend_cnt_list","social_friend_cnt_list","pay_amt_list","pay_cnt_list","pay_per_day_list","pay_mean_list"]
+    time_keys: ["ftime", "ftime_list"]
+    seq_pooling_type: target
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: False
+    seq_feature_interaction_layers: 1
+    use_position_emb: True
+    use_time_emb: True
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
+
+FESeq_2_ml10m: # BST+default field+pos embedding
     model: FESeq
     dataset_id: ml_10mseq_abstime
     loss: 'binary_crossentropy'
@@ -404,13 +397,11 @@ FESeq_2_ml10m: # BST+pos embedding+weighted sum pooling
     default_field: ["user_id"]
     target_field: ["movie_id", "year"]
     sequence_field: ["movie_id_list", "year_list"]
-    target_item_field: ["movie_id", "year"]
     time_keys: ["timestamp", "timestamp_list"]
-    seq_pooling_type: weighted_sum
-    rel_score_hidden_dim: 32
+    seq_pooling_type: target
     interaction_layer_name: autoint
     use_seq_feature_interaction: False
-    seq_feature_interaction_layers: 2
+    seq_feature_interaction_layers: 1
     use_position_emb: True
     use_time_emb: True
     num_time_embeddings: 4001
@@ -424,7 +415,414 @@ FESeq_2_ml10m: # BST+pos embedding+weighted sum pooling
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_3_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling
+FESeq_3_eleme: # BST+pos embedding+2 layers autoint
+    model: FESeq
+    dataset_id: elemeseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.1
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 16
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 8
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.
+    fi_dropout: 0.1
+    layer_norm: False
+    use_residual: True
+    default_field: []
+    target_field: ["shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","hours","time_type","weekdays", "rank_7","rank_30","rank_90"]
+    sequence_field: ["shop_id_list","item_id_list","city_id_list","district_id_list","shop_aoi_id_list","shop_geohash_6_list","shop_geohash_12_list","category_1_id_list","hours_list","time_type_list","weekdays_list", "rank_7_list","rank_30_list","rank_90_list"]
+    target_item_field: ["shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","rank_7","rank_30","rank_90"]
+    time_keys: ["times", "times_list"]
+    seq_pooling_type: target
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: True
+    seq_feature_interaction_layers: 2
+    use_item_feature_interaction: True
+    item_feature_interaction_layers: 2
+    use_position_emb: True
+    use_time_emb: True
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
+
+FESeq_3_bundle: # BST+pos embedding+2 layers autoint
+    model: FESeq
+    dataset_id: bundleseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-4
+    embedding_regularizer: 0.1
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 16
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 8
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.1
+    fi_dropout: 0.1
+    layer_norm: False
+    use_residual: True
+    default_field: []
+    target_field: ["bundle_id","bundle_price","island_no","spin_stock","coin_stock","diamond_stock","island_complete_gap_coin","island_complete_gap_building_cnt","tournament_rank","login_cnt_1d","ads_watch_cnt_1d","register_country_arpu","life_time","star","battle_pass_exp","is_up_to_date_version","pet_heart_stock","pet_exp_stock","friend_cnt","social_friend_cnt","pay_amt","pay_cnt","pay_per_day","pay_mean"]
+    sequence_field: ["bundle_id_list","bundle_price_list","island_no_list","spin_stock_list","coin_stock_list","diamond_stock_list","island_complete_gap_coin_list","island_complete_gap_building_cnt_list","tournament_rank_list","login_cnt_1d_list","ads_watch_cnt_1d_list","register_country_arpu_list","life_time_list","star_list","battle_pass_exp_list","is_up_to_date_version_list","pet_heart_stock_list","pet_exp_stock_list","friend_cnt_list","social_friend_cnt_list","pay_amt_list","pay_cnt_list","pay_per_day_list","pay_mean_list"]
+    target_item_field: ["bundle_id","bundle_price"]
+    time_keys: ["ftime", "ftime_list"]
+    seq_pooling_type: target
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: True
+    seq_feature_interaction_layers: 2
+    use_item_feature_interaction: True
+    item_feature_interaction_layers: 2
+    use_position_emb: True
+    use_time_emb: True
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
+
+FESeq_3_ml10m: # BST+pos embedding+2 layers autoint
+    model: FESeq
+    dataset_id: ml_10mseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 1
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.1
+    layer_norm: False
+    use_residual: True
+    default_field: []
+    target_field: ["movie_id", "year"]
+    sequence_field: ["movie_id_list", "year_list"]
+    target_item_field: ["movie_id", "year"]
+    time_keys: ["timestamp", "timestamp_list"]
+    seq_pooling_type: target
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: True
+    seq_feature_interaction_layers: 2
+    use_item_feature_interaction: True
+    item_feature_interaction_layers: 2
+    use_position_emb: True
+    use_time_emb: True
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
+
+FESeq_4_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling
+    model: FESeq
+    dataset_id: elemeseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.1
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 16
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 8
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.
+    fi_dropout: 0.1
+    layer_norm: False
+    use_residual: True
+    default_field: []
+    target_field: ["shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","hours","time_type","weekdays", "rank_7","rank_30","rank_90"]
+    sequence_field: ["shop_id_list","item_id_list","city_id_list","district_id_list","shop_aoi_id_list","shop_geohash_6_list","shop_geohash_12_list","category_1_id_list","hours_list","time_type_list","weekdays_list", "rank_7_list","rank_30_list","rank_90_list"]
+    target_item_field: ["shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","rank_7","rank_30","rank_90"]
+    time_keys: ["times", "times_list"]
+    seq_pooling_type: weighted_sum
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: True
+    seq_feature_interaction_layers: 2
+    use_item_feature_interaction: True
+    item_feature_interaction_layers: 2
+    use_position_emb: True
+    use_time_emb: True
+    rel_score_hidden_dim: 128
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
+    save_attn_matrix: True
+    save_rel_score_relation: True
+
+FESeq_4_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling
+    model: FESeq
+    dataset_id: bundleseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-4
+    embedding_regularizer: 0.1
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 16
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 8
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.1
+    fi_dropout: 0.1
+    layer_norm: False
+    use_residual: True
+    default_field: []
+    target_field: ["bundle_id","bundle_price","island_no","spin_stock","coin_stock","diamond_stock","island_complete_gap_coin","island_complete_gap_building_cnt","tournament_rank","login_cnt_1d","ads_watch_cnt_1d","register_country_arpu","life_time","star","battle_pass_exp","is_up_to_date_version","pet_heart_stock","pet_exp_stock","friend_cnt","social_friend_cnt","pay_amt","pay_cnt","pay_per_day","pay_mean"]
+    sequence_field: ["bundle_id_list","bundle_price_list","island_no_list","spin_stock_list","coin_stock_list","diamond_stock_list","island_complete_gap_coin_list","island_complete_gap_building_cnt_list","tournament_rank_list","login_cnt_1d_list","ads_watch_cnt_1d_list","register_country_arpu_list","life_time_list","star_list","battle_pass_exp_list","is_up_to_date_version_list","pet_heart_stock_list","pet_exp_stock_list","friend_cnt_list","social_friend_cnt_list","pay_amt_list","pay_cnt_list","pay_per_day_list","pay_mean_list"]
+    target_item_field: ["bundle_id","bundle_price"]
+    time_keys: ["ftime", "ftime_list"]
+    seq_pooling_type: weighted_sum
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: True
+    seq_feature_interaction_layers: 2
+    use_item_feature_interaction: True
+    item_feature_interaction_layers: 2
+    use_position_emb: True
+    use_time_emb: True
+    rel_score_hidden_dim: 32
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
+    save_attn_matrix: True
+    save_rel_score_relation: True
+
+FESeq_4_ml10m: # BST+pos embedding+2 layers autoint+weighted sum pooling
+    model: FESeq
+    dataset_id: ml_10mseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 1
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.1
+    layer_norm: False
+    use_residual: True
+    default_field: []
+    target_field: ["movie_id", "year"]
+    sequence_field: ["movie_id_list", "year_list"]
+    target_item_field: ["movie_id", "year"]
+    time_keys: ["timestamp", "timestamp_list"]
+    seq_pooling_type: weighted_sum
+    rel_score_hidden_dim: 32
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: True
+    seq_feature_interaction_layers: 2
+    use_item_feature_interaction: True
+    item_feature_interaction_layers: 2
+    use_position_emb: True
+    use_time_emb: True
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
+
+FESeq_5_eleme: # BST+pos embedding+weighted sum pooling
+    model: FESeq
+    dataset_id: elemeseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.1
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 16
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 8
+    stacked_transformer_layers: 1
+    attention_dropout: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    net_dropout: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    fi_dropout: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    layer_norm: False
+    use_residual: True
+    default_field: []
+    target_field: ["shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","hours","time_type","weekdays", "rank_7","rank_30","rank_90"]
+    sequence_field: ["shop_id_list","item_id_list","city_id_list","district_id_list","shop_aoi_id_list","shop_geohash_6_list","shop_geohash_12_list","category_1_id_list","hours_list","time_type_list","weekdays_list", "rank_7_list","rank_30_list","rank_90_list"]
+    target_item_field: ["shop_id","item_id","city_id","district_id","shop_aoi_id","shop_geohash_6","shop_geohash_12","category_1_id","rank_7","rank_30","rank_90"]
+    time_keys: ["times", "times_list"]
+    seq_pooling_type: weighted_sum
+    use_position_emb: True
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: False
+    seq_feature_interaction_layers: 1
+    use_time_emb: True
+    rel_score_hidden_dim: 128
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
+
+FESeq_5_bundle: # BST+pos embedding+weighted sum pooling
+    model: FESeq
+    dataset_id: bundleseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-4
+    embedding_regularizer: 0.1
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 16
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 8
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.1
+    fi_dropout: 0.1
+    layer_norm: False
+    use_residual: True
+    default_field: []
+    target_field: ["bundle_id","bundle_price","island_no","spin_stock","coin_stock","diamond_stock","island_complete_gap_coin","island_complete_gap_building_cnt","tournament_rank","login_cnt_1d","ads_watch_cnt_1d","register_country_arpu","life_time","star","battle_pass_exp","is_up_to_date_version","pet_heart_stock","pet_exp_stock","friend_cnt","social_friend_cnt","pay_amt","pay_cnt","pay_per_day","pay_mean"]
+    sequence_field: ["bundle_id_list","bundle_price_list","island_no_list","spin_stock_list","coin_stock_list","diamond_stock_list","island_complete_gap_coin_list","island_complete_gap_building_cnt_list","tournament_rank_list","login_cnt_1d_list","ads_watch_cnt_1d_list","register_country_arpu_list","life_time_list","star_list","battle_pass_exp_list","is_up_to_date_version_list","pet_heart_stock_list","pet_exp_stock_list","friend_cnt_list","social_friend_cnt_list","pay_amt_list","pay_cnt_list","pay_per_day_list","pay_mean_list"]
+    target_item_field: ["bundle_id","bundle_price"]
+    time_keys: ["ftime", "ftime_list"]
+    seq_pooling_type: weighted_sum
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: False
+    seq_feature_interaction_layers: 1
+    use_position_emb: True
+    use_time_emb: True
+    rel_score_hidden_dim: 32
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
+    save_rel_score_relation: True
+
+FESeq_5_ml10m: # BST+pos embedding+weighted sum pooling
+    model: FESeq
+    dataset_id: ml_10mseq_abstime
+    loss: 'binary_crossentropy'
+    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    task: binary_classification
+    optimizer: adam
+    learning_rate: 1.0e-3
+    embedding_regularizer: 0.01
+    net_regularizer: 0
+    batch_size: 4096
+    embedding_dim: 10
+    dnn_hidden_units: [1024, 512, 256]
+    dnn_activations: leaky_relu
+    num_heads: 1
+    stacked_transformer_layers: 1
+    attention_dropout: 0.1
+    net_dropout: 0.1
+    layer_norm: False
+    use_residual: True
+    default_field: []
+    target_field: ["movie_id", "year"]
+    sequence_field: ["movie_id_list", "year_list"]
+    target_item_field: ["movie_id", "year"]
+    time_keys: ["timestamp", "timestamp_list"]
+    seq_pooling_type: weighted_sum
+    rel_score_hidden_dim: 32
+    interaction_layer_name: autoint
+    use_seq_feature_interaction: False
+    seq_feature_interaction_layers: 1
+    use_position_emb: True
+    use_time_emb: True
+    num_time_embeddings: 4001
+    time_log_base: -1
+    use_causal_mask: True
+    batch_norm: False
+    epochs: 100
+    shuffle: True
+    seed: 2023
+    monitor: {'AUC': 1, 'logloss': 0}
+    monitor_mode: 'max'
+    early_stop_patience: 2
+
+FESeq_6_eleme: # BST+default field+pos embedding+2 layers autoint+weighted sum pooling
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
@@ -472,7 +870,7 @@ FESeq_3_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling
     save_attn_matrix: True
     save_rel_score_relation: True
 
-FESeq_3_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling
+FESeq_6_bundle: # BST+default field+pos embedding+2 layers autoint+weighted sum pooling
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
@@ -521,7 +919,7 @@ FESeq_3_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling
     save_attn_matrix: True
     save_rel_score_relation: True
 
-FESeq_3_ml10m: # BST+pos embedding+weighted sum pooling
+FESeq_6_ml10m: # BST+default field+pos embedding+2 layers autoint+weighted sum pooling
     model: FESeq
     dataset_id: ml_10mseq_abstime
     loss: 'binary_crossentropy'
@@ -1621,7 +2019,7 @@ FESeq_3_32_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+emb
     save_attn_matrix: True
     save_rel_score_relation: True
 
-FESeq_4_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-time embedding
+FESeq_6_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-time embedding
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
@@ -1667,7 +2065,7 @@ FESeq_4_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-time em
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_4_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-time embedding
+FESeq_6_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-time embedding
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
@@ -1714,7 +2112,7 @@ FESeq_4_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-time e
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_5_eleme: # BST+2 layers autoint+weighted sum pooling
+FESeq_7_eleme: # BST+2 layers autoint+weighted sum pooling
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
@@ -1760,7 +2158,7 @@ FESeq_5_eleme: # BST+2 layers autoint+weighted sum pooling
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_5_bundle: # BST+2 layers autoint+weighted sum pooling
+FESeq_7_bundle: # BST+2 layers autoint+weighted sum pooling
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
@@ -1807,7 +2205,7 @@ FESeq_5_bundle: # BST+2 layers autoint+weighted sum pooling
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_6_eleme: # BST+pos embedding+weighted sum pooling
+FESeq_8_eleme: # BST+pos embedding+weighted sum pooling
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
@@ -1853,7 +2251,7 @@ FESeq_6_eleme: # BST+pos embedding+weighted sum pooling
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_6_bundle: # BST+pos embedding+weighted sum pooling
+FESeq_8_bundle: # BST+pos embedding+weighted sum pooling
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
@@ -1900,7 +2298,7 @@ FESeq_6_bundle: # BST+pos embedding+weighted sum pooling
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_7_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-default field
+FESeq_9_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-default field
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
@@ -1947,7 +2345,7 @@ FESeq_7_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-default
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_7_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-default field
+FESeq_9_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-default field
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
@@ -1994,7 +2392,7 @@ FESeq_7_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-defaul
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_8_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-use scale
+FESeq_10_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-use scale
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
@@ -2041,7 +2439,7 @@ FESeq_8_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-use sca
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_8_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-use scale
+FESeq_10_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-use scale
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
@@ -2089,7 +2487,7 @@ FESeq_8_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-use sc
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_9_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling(dot attention)
+FESeq_11_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling(dot attention)
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
@@ -2136,7 +2534,7 @@ FESeq_9_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling(dot att
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_9_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling(dot attention)
+FESeq_11_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling(dot attention)
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
@@ -2184,7 +2582,7 @@ FESeq_9_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling(dot at
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_10_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling(din attention)
+FESeq_12_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling(din attention)
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
@@ -2231,7 +2629,7 @@ FESeq_10_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling(din at
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_10_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling(din attention)
+FESeq_12_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling(din attention)
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
@@ -2279,7 +2677,7 @@ FESeq_10_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling(din a
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_11_eleme: # BST+pos embedding+2 layers autoint+mean pooling
+FESeq_13_eleme: # BST+pos embedding+2 layers autoint+mean pooling
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
@@ -2324,7 +2722,7 @@ FESeq_11_eleme: # BST+pos embedding+2 layers autoint+mean pooling
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_11_bundle: # BST+pos embedding+2 layers autoint+mean pooling
+FESeq_13_bundle: # BST+pos embedding+2 layers autoint+mean pooling
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
@@ -2371,7 +2769,7 @@ FESeq_11_bundle: # BST+pos embedding+2 layers autoint+mean pooling
     early_stop_patience: 2
 
 
-FESeq_12_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-causal mask
+FESeq_14_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-causal mask
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
@@ -2419,7 +2817,7 @@ FESeq_12_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-causal
     save_attn_matrix: True
     save_rel_score_relation: True
 
-FESeq_12_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-causal mask
+FESeq_14_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-causal mask
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'
