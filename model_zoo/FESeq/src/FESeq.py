@@ -133,10 +133,10 @@ class FESeq(BaseModel):
             target_item_dim = embedding_dim
 
         if self.use_seq_feature_interaction:
-            self.seq_feature_interaction = InteractionLayer(embedding_dim * (len(sequence_field)+len(default_field)) if self.interaction_layer_name.lower() not in ["autoint", "destine"] else embedding_dim, self.seq_feature_interaction_layers, self.interaction_layer_name, net_dropout=fi_dropout, save_attn_matrix=self._save_attn_matrix)
+            self.seq_feature_interaction = InteractionLayer(embedding_dim * (len(sequence_field)+len(default_field)) if self.interaction_layer_name.lower() not in ["autoint", "destine"] else embedding_dim, self.seq_feature_interaction_layers, self.interaction_layer_name, net_dropout=fi_dropout, num_heads=2, save_attn_matrix=self._save_attn_matrix)
 
         if self.use_item_feature_interaction and self.seq_pooling_type == "weighted_sum":
-            self.item_feature_interaction = InteractionLayer(embedding_dim * len(target_item_field) if self.interaction_layer_name.lower() not in ["autoint", "destine"] else embedding_dim, self.item_feature_interaction_layers, self.interaction_layer_name, net_dropout=fi_dropout)
+            self.item_feature_interaction = InteractionLayer(embedding_dim * len(target_item_field) if self.interaction_layer_name.lower() not in ["autoint", "destine"] else embedding_dim, self.item_feature_interaction_layers, self.interaction_layer_name, net_dropout=fi_dropout, num_heads=2)
 
         self.transformer_encoders.append(
             TransformerEncoder(seq_len=seq_len,
@@ -150,6 +150,7 @@ class FESeq(BaseModel):
                                 use_residual=use_residual))
         self.pooling_layer = PoolingLayer(seq_pooling_type=self.seq_pooling_type,
                                           attention_type=seq_pooling_attn_type,
+                                          seq_len=seq_len,
                                           seq_model_dim=model_dim,
                                           item_dim=target_item_dim,
                                           net_dropout=net_dropout,

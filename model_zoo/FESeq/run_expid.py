@@ -95,10 +95,10 @@ if __name__ == '__main__':
     
     model_class = getattr(model_zoo, params['model'])
 
-    if isinstance(params["net_dropout"], list) and isinstance(params["attention_dropout"], list) and isinstance(params["fi_dropout"], list):
-        net_dropouts, attn_dropouts, fi_dropouts = params["net_dropout"], params["attention_dropout"], params["fi_dropout"]
-        for i in range(len(net_dropouts)):
-            params["net_dropout"], params["attention_dropout"], params["fi_dropout"] = net_dropouts[i], attn_dropouts[i], fi_dropouts[i]
+    if isinstance(params["attention_dropout"], list):
+        dropouts = params["attention_dropout"]
+        for i in range(len(dropouts)):
+            params["attention_dropout"] = params["net_dropout"] = params["fi_dropout"] = dropouts[i]
             train_val_test(feature_map, params)
 
     else:

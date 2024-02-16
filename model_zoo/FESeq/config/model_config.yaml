@@ -52,7 +52,7 @@ FESeq_0_eleme: # BST+default_field
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
-    embedding_regularizer: 0.01
+    embedding_regularizer: 0.1
     net_regularizer: 0
     batch_size: 4096
     embedding_dim: 16
@@ -61,7 +61,8 @@ FESeq_0_eleme: # BST+default_field
     num_heads: 8
     stacked_transformer_layers: 1
     attention_dropout: 0.1
-    net_dropout: 0.1
+    net_dropout: 0.
+    fi_dropout: 0.2
     layer_norm: False
     use_residual: True
     default_field: ["user_id","gender","visit_city","is_super_vip","geohash12","avg_price", "ctr_30", "ord_30", "total_amt_30"]
@@ -176,7 +177,7 @@ FESeq_1_eleme: # BST+pos embedding
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
-    embedding_regularizer: 0.01
+    embedding_regularizer: 0.1
     net_regularizer: 0
     batch_size: 4096
     embedding_dim: 16
@@ -185,7 +186,8 @@ FESeq_1_eleme: # BST+pos embedding
     num_heads: 8
     stacked_transformer_layers: 1
     attention_dropout: 0.1
-    net_dropout: 0.1
+    net_dropout: 0.
+    fi_dropout: 0.2
     layer_norm: False
     use_residual: True
     default_field: []
@@ -299,7 +301,7 @@ FESeq_2_eleme: # BST+default field+pos embedding
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
-    embedding_regularizer: 0.01
+    embedding_regularizer: 0.1
     net_regularizer: 0
     batch_size: 4096
     embedding_dim: 16
@@ -308,7 +310,8 @@ FESeq_2_eleme: # BST+default field+pos embedding
     num_heads: 8
     stacked_transformer_layers: 1
     attention_dropout: 0.1
-    net_dropout: 0.1
+    net_dropout: 0.
+    fi_dropout: 0.2
     layer_norm: False
     use_residual: True
     default_field: ["user_id","gender","visit_city","is_super_vip","geohash12","avg_price", "ctr_30", "ord_30", "total_amt_30"]
@@ -433,7 +436,7 @@ FESeq_3_eleme: # BST+pos embedding+2 layers autoint
     stacked_transformer_layers: 1
     attention_dropout: 0.1
     net_dropout: 0.
-    fi_dropout: 0.1
+    fi_dropout: 0.2
     layer_norm: False
     use_residual: True
     default_field: []
@@ -567,7 +570,7 @@ FESeq_4_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling
     stacked_transformer_layers: 1
     attention_dropout: 0.1
     net_dropout: 0.
-    fi_dropout: 0.1
+    fi_dropout: 0.2
     layer_norm: False
     use_residual: True
     default_field: []
@@ -706,9 +709,9 @@ FESeq_5_eleme: # BST+pos embedding+weighted sum pooling
     dnn_activations: leaky_relu
     num_heads: 8
     stacked_transformer_layers: 1
-    attention_dropout: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-    net_dropout: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-    fi_dropout: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    attention_dropout: 0.1
+    net_dropout: 0.
+    fi_dropout: 0.2
     layer_norm: False
     use_residual: True
     default_field: []
@@ -720,7 +723,7 @@ FESeq_5_eleme: # BST+pos embedding+weighted sum pooling
     use_position_emb: True
     interaction_layer_name: autoint
     use_seq_feature_interaction: False
-    seq_feature_interaction_layers: 1
+    seq_feature_interaction_layers: 2
     use_time_emb: True
     rel_score_hidden_dim: 128
     num_time_embeddings: 4001
@@ -826,7 +829,7 @@ FESeq_6_eleme: # BST+default field+pos embedding+2 layers autoint+weighted sum p
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
-    metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
+    metrics: ['logloss', 'AUC']
     task: binary_classification
     optimizer: adam
     learning_rate: 1.0e-3
@@ -840,7 +843,7 @@ FESeq_6_eleme: # BST+default field+pos embedding+2 layers autoint+weighted sum p
     stacked_transformer_layers: 1
     attention_dropout: 0.1
     net_dropout: 0.
-    fi_dropout: 0.1
+    fi_dropout: 0.2
     layer_norm: False
     use_residual: True
     default_field: ["user_id","gender","visit_city","is_super_vip","geohash12","avg_price", "ctr_30", "ord_30", "total_amt_30"]
@@ -2019,7 +2022,7 @@ FESeq_3_32_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling+emb
     save_attn_matrix: True
     save_rel_score_relation: True
 
-FESeq_6_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-time embedding
+FESeq_7_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-time embedding
     model: FESeq
     dataset_id: elemeseq_abstime
     loss: 'binary_crossentropy'
@@ -2065,7 +2068,7 @@ FESeq_6_eleme: # BST+pos embedding+2 layers autoint+weighted sum pooling-time em
     monitor_mode: 'max'
     early_stop_patience: 2
 
-FESeq_6_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-time embedding
+FESeq_7_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling-time embedding
     model: FESeq
     dataset_id: bundleseq_abstime
     loss: 'binary_crossentropy'

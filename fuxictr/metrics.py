@@ -15,7 +15,7 @@
 # =========================================================================
 
 
-from sklearn.metrics import roc_auc_score, log_loss, precision_score, recall_score, f1_score
+from sklearn.metrics import roc_auc_score, log_loss, precision_recall_fscore_support
 import numpy as np
 import pandas as pd
 import multiprocessing as mp
@@ -25,17 +25,19 @@ from collections import OrderedDict
 def evaluate_metrics(y_true, y_pred, metrics, group_id=None):
     return_dict = OrderedDict()
     group_metrics = []
+    thres = np.max(y_pred)/2
+    p, r, f, _ = precision_recall_fscore_support(y_true, np.floor(y_pred/float(thres)*0.5 + 0.5), average="binary")
     for metric in metrics:
         if metric in ['logloss', 'binary_crossentropy']:
             return_dict[metric] = log_loss(y_true, y_pred, eps=1e-7)
         elif metric == 'AUC':
             return_dict[metric] = roc_auc_score(y_true, y_pred)
         elif metric == 'precision':
-            return_dict[metric] = precision_score(y_true, np.floor(y_pred+0.5), average='weighted')
+            return_dict[metric] = p
         elif metric == 'recall':
-            return_dict[metric] = recall_score(y_true, np.floor(y_pred+0.5), average='weighted')
+            return_dict[metric] = r
         elif metric == 'f1':
-            return_dict[metric] = f1_score(y_true, np.floor(y_pred+0.5), average='weighted')
+            return_dict[metric] = f
         elif metric in ["gAUC", "avgAUC", "MRR"] or metric.startswith("NDCG"):
             return_dict[metric] = 0
             group_metrics.append(metric)

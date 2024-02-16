@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+from torch.nn import functional as F
 from fuxictr.pytorch.layers import MLP_Block
 from fuxictr.pytorch.torch_utils import get_activation
 
@@ -9,6 +10,7 @@ class PoolingLayer(nn.Module):
     def __init__(self,
                  seq_pooling_type,
                  attention_type="bilinear_attention",
+                 seq_len=None,
                  seq_model_dim=None,
                  item_dim=None,
                  attn_dim=128,
@@ -20,14 +22,17 @@ class PoolingLayer(nn.Module):
         self.seq_pooling_type = seq_pooling_type
         self.attention_type = attention_type
         if self.seq_pooling_type == "weighted_sum":
-            self.activation = get_activation("prelu", 1)
             self.head_dim = attn_dim // num_heads
             self.num_heads = num_heads
             self.W_q = nn.Linear(item_dim, attn_dim, bias=False)
             self.W_k = nn.Linear(seq_model_dim, attn_dim, bias=False)
             self.W_v = nn.Linear(seq_model_dim, attn_dim, bias=False)
-            self.ffn = nn.Sequential(nn.Linear(attn_dim, seq_model_dim),
-                        self.activation)
+            hidden_dim = 8*seq_model_dim
+            self.weight_seq = nn.Parameter(torch.zeros(seq_len))
+            self.weight_attn = nn.Parameter(torch.zeros(attn_dim))
+            self.weight_hidden = nn.Parameter(torch.zeros(hidden_dim))
+            self.ffn1 = nn.Linear(attn_dim, hidden_dim)
+            self.ffn2 = nn.Linear(hidden_dim, seq_model_dim)
   
             self.scale = attn_dim** 0.5 if use_scale else None
             if attention_type == "bilinear_attention":
@@ -57,9 +62,9 @@ class PoolingLayer(nn.Module):
             user_behavior_key_emb = self.W_k(transformer_out)
             user_behavior_value_emb = self.W_v(transformer_out)
             target_item_emb = self.W_q(target_item_emb)
-            user_behavior_key_emb = self.activation(user_behavior_key_emb)
-            user_behavior_value_emb = self.activation(user_behavior_value_emb)
-            target_item_emb = self.activation(target_item_emb)
+            user_behavior_key_emb = F.prelu(user_behavior_key_emb, self.weight_seq)
+            user_behavior_value_emb = F.prelu(user_behavior_value_emb, self.weight_seq)
+            target_item_emb = F.prelu(target_item_emb, self.weight_attn)
 
             batch_size = transformer_out.size(0)
             target_item_emb = target_item_emb.view(batch_size, -1, self.num_heads, self.head_dim).transpose(1, 2)
@@ -94,6 +99,9 @@ class PoolingLayer(nn.Module):
                 attn_score = self.attn_dropout(attn_score)
             output = torch.sum(attn_score.unsqueeze(-1) * user_behavior_value_emb, dim=2)
             output = output.transpose(1, 2).contiguous().view(batch_size, -1, self.num_heads * self.head_dim).squeeze(1)
-            return self.ffn(output), attn_score
+            output = self.ffn1(output)
+            output = F.prelu(output, self.weight_hidden)
+            output = self.ffn2(output)
+            return output, attn_score
         else:
             raise ValueError("seq_pooling_type={} not supported.".format(self.seq_pooling_type))
