@@ -93,8 +93,8 @@ FESeq_0_bundle: # BST+default field
     metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam 
-    learning_rate: 1.0e-3
-    embedding_regularizer: 0.01
+    learning_rate: 1.0e-4
+    embedding_regularizer: 0.1
     net_regularizer: 0
     batch_size: 4096
     embedding_dim: 16
@@ -103,7 +103,8 @@ FESeq_0_bundle: # BST+default field
     num_heads: 8
     stacked_transformer_layers: 1
     attention_dropout: 0.1
-    net_dropout: 0.
+    net_dropout: 0.1
+    fi_dropout: 0.1
     layer_norm: False
     use_residual: True
     default_field: ["uid", "is_visitor", "gender", "register_country", "register_device",
@@ -218,8 +219,8 @@ FESeq_1_bundle: # BST+pos embedding
     metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
-    learning_rate: 1.0e-3
-    embedding_regularizer: 0.01
+    learning_rate: 1.0e-4
+    embedding_regularizer: 0.1
     net_regularizer: 0
     batch_size: 4096
     embedding_dim: 16
@@ -228,7 +229,8 @@ FESeq_1_bundle: # BST+pos embedding
     num_heads: 8
     stacked_transformer_layers: 1
     attention_dropout: 0.1
-    net_dropout: 0.
+    net_dropout: 0.1
+    fi_dropout: 0.1
     layer_norm: False
     use_residual: True
     default_field: []
@@ -342,8 +344,8 @@ FESeq_2_bundle: # BST+default field+pos embedding
     metrics: ['logloss', 'AUC', 'precision', 'recall', 'f1']
     task: binary_classification
     optimizer: adam
-    learning_rate: 1.0e-3
-    embedding_regularizer: 0.01
+    learning_rate: 1.0e-4
+    embedding_regularizer: 0.1
     net_regularizer: 0
     batch_size: 4096
     embedding_dim: 16
@@ -352,7 +354,8 @@ FESeq_2_bundle: # BST+default field+pos embedding
     num_heads: 8
     stacked_transformer_layers: 1
     attention_dropout: 0.1
-    net_dropout: 0.
+    net_dropout: 0.1
+    fi_dropout: 0.1
     layer_norm: False
     use_residual: True
     default_field: ["uid", "is_visitor", "gender", "register_country", "register_device",
@@ -634,7 +637,7 @@ FESeq_4_bundle: # BST+pos embedding+2 layers autoint+weighted sum pooling
     item_feature_interaction_layers: 2
     use_position_emb: True
     use_time_emb: True
-    rel_score_hidden_dim: 32
+    rel_score_hidden_dim: 128
     num_time_embeddings: 4001
     time_log_base: -1
     use_causal_mask: True
@@ -769,7 +772,7 @@ FESeq_5_bundle: # BST+pos embedding+weighted sum pooling
     seq_feature_interaction_layers: 1
     use_position_emb: True
     use_time_emb: True
-    rel_score_hidden_dim: 32
+    rel_score_hidden_dim: 128
     num_time_embeddings: 4001
     time_log_base: -1
     use_causal_mask: True
@@ -908,7 +911,7 @@ FESeq_6_bundle: # BST+default field+pos embedding+2 layers autoint+weighted sum 
     item_feature_interaction_layers: 2
     use_position_emb: True
     use_time_emb: True
-    rel_score_hidden_dim: 32
+    rel_score_hidden_dim: 128
     num_time_embeddings: 4001
     time_log_base: -1
     use_causal_mask: True
