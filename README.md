@@ -1,6 +1,6 @@
 # Feature Interaction-Enhanced Sequential Transformer for Click-Through Rate Prediction
 
-This is the PyTorch implementation for the paper Feature Interaction-Enhanced Sequential Transformer for Click-Through Rate Prediction based on [FuxiCTR](https://github.com/xue-pai/FuxiCTR). 
+This is the PyTorch implementation for the paper [Feature Interaction-Enhanced Sequential Transformer for Click-Through Rate Prediction](https://www.mdpi.com/2076-3417/14/7/2760) based on [FuxiCTR](https://github.com/xue-pai/FuxiCTR). 
 
 ![alt text](docs/img/FESeq.png?raw=true)
 
